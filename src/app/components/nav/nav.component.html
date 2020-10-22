@@ -1,0 +1,63 @@
+<mat-sidenav-container class="container">
+  <mat-sidenav
+    position="end"
+    [opened]="opened"
+    (click)="mobileClose()"
+    class="sidenav"
+    mode="over"
+    hasBackdrop="true"
+    fixedInViewport="true"
+    fixedTopGap="0"
+  >
+    <div class="offset" style="height: 70px;"></div>
+    <mat-nav-list class="nav-list">
+      <br />
+      <ng-container>
+        <a mat-list-item routerLink="/home">
+          <i class="material-icons">home</i> Home
+        </a>
+      </ng-container>
+
+      <ng-container>
+        <a mat-list-item routerLink="/projects">
+          <i class="material-icons">account_tree</i> Projects
+        </a>
+      </ng-container>
+      <!-- <a mat-list-item routerLink="/calendar" >
+				<i class="material-icons">date_range</i> Calendário
+			</a> -->
+      <ng-container>
+        <a mat-list-item routerLink="/skills">
+          <i class="material-icons">engineering</i> Skills
+        </a>
+      </ng-container>
+
+      <ng-container>
+        <a mat-list-item routerLink="/live">
+          <i class="material-icons">mouse</i> Live Examples
+        </a>
+      </ng-container>
+
+      <!-- <a mat-list-item routerLink="/dashboard" [disabled]="!isAuthenticated"> -->
+      <ng-container>
+        <a mat-list-item routerLink="/blog">
+          <i class="material-icons">rss_feed</i> Blog
+        </a>
+      </ng-container>
+      <ng-container>
+        <a mat-list-item routerLink="/about">
+          <i class="material-icons">add</i> About
+        </a>
+      </ng-container>
+
+      <!-- [disabled]="!isAuthenticated" -->
+      <a class="logoff" mat-list-item (click)="logOut()">
+        <i class="material-icons">power_settings_new</i> Logoff
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

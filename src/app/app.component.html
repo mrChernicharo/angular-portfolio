@@ -1,0 +1,38 @@
+<mat-toolbar color="primary">
+  <img src="../assets/favicon.ico" alt="logo" />
+  <div class="logo-grid">
+    <div class="my-name">
+      <div class="grid-item-1"><span class="title1">Felipe </span></div>
+      <div class="grid-item-2"><span class="title2">Chernicharo </span></div>
+      <div class="grid-item-3"><span class="titleDev"> Dev</span></div>
+    </div>
+  </div>
+
+  <span class="example-spacer"></span>
+  <button
+    mat-icon-button
+    class="example-icon favorite-icon"
+    aria-label="Example icon-button with heart icon"
+  >
+    <mat-icon>favorite</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    class="example-icon"
+    aria-label="Example icon-button with share icon"
+  >
+    <mat-icon>share</mat-icon>
+  </button>
+
+  <button
+    mat-icon-button
+    class="menu-icon"
+    aria-label="Example icon-button with menu icon"
+    (click)="sidenavToggle()"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+<div class="app-container">
+  <app-nav [opened]="navOpened"></app-nav>
+</div>
