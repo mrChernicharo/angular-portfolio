@@ -1,6 +1,9 @@
 mat-toolbar {
   position: fixed;
   z-index: 100;
+  .icon {
+    margin: 0 14px 0 0;
+  }
 
   .logo-grid {
     border: 1px solid #fff;
@@ -16,11 +19,20 @@ mat-toolbar {
     .my-name {
       display: flex;
 
-      .grid-item-1 {
+      .grid-item-0 {
         position: absolute;
+        top: -12.4px;
+        left: 60px;
 
-        top: 10px;
-        left: 81px;
+        .title0 {
+          font-size: 8px;
+          letter-spacing: 4px;
+          // border: 1px solid #fff;
+        }
+      }
+
+      .grid-item-1 {
+        margin: -7px 0px 0 33px;
 
         .title1 {
           font-size: 11px;
@@ -28,9 +40,7 @@ mat-toolbar {
         }
       }
       .grid-item-2 {
-        position: absolute;
-        bottom: 8px;
-        left: 48px;
+        margin: 3px 0px 0px -62px;
 
         .title2 {
           // border: 1px solid #fff;
