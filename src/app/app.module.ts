@@ -1,5 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -9,19 +10,42 @@ import { AboutComponent } from "./pages/about/about.component";
 import { ProjectsComponent } from "./pages/projects/projects.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
+import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
-import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatIconModule } from "@angular/material/icon";
+import { MatInputModule } from "@angular/material/input";
 import { MatListModule } from "@angular/material/list";
-import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatSelectModule } from "@angular/material/select";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
-import { MatIconModule } from "@angular/material/icon";
-import { MatButtonModule } from "@angular/material/button";
 import { MatTabsModule } from "@angular/material/tabs";
-import { NavComponent } from './components/nav/nav.component';
-import { LiveExamplesComponent } from './pages/live-examples/live-examples.component';
-import { BlogComponent } from './pages/blog/blog.component';
+import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatTooltipModule } from "@angular/material/tooltip";
+
+// import {} from '@angular/material/'
+// import {} from '@angular/material'
+
+import { NavComponent } from "./components/nav/nav.component";
+import { LiveExamplesComponent } from "./pages/live-examples/live-examples.component";
+import { BlogComponent } from "./pages/blog/blog.component";
+
+const matModules = [
+  MatButtonModule,
+  MatCardModule,
+  MatDialogModule,
+  MatFormFieldModule,
+  MatListModule,
+  MatIconModule,
+  MatInputModule,
+  MatSidenavModule,
+  MatSnackBarModule,
+  MatSelectModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatTooltipModule,
+];
 
 @NgModule({
   declarations: [
@@ -38,16 +62,9 @@ import { BlogComponent } from './pages/blog/blog.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDialogModule,
-    MatListModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatSnackBarModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatTooltipModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ...matModules,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 

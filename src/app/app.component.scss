@@ -67,3 +67,8 @@ mat-toolbar {
     right: 10px;
   }
 }
+@media screen and (max-width: 600px) {
+  mat-toolbar {
+    height: 64px; // evitar o resize default
+  }
+}

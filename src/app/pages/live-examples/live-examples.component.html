@@ -1,1 +1,54 @@
-<p>live-examples works!</p>
+<h1>Beat Maker</h1>
+
+<form [formGroup]="form" matForm>
+  <mat-form-field appearance="outline">
+    <mat-label>Tempo</mat-label>
+    <input
+      type="number"
+      name="tempo"
+      formControlName="tempo"
+      matInput
+      placeholder="tempo"
+      [(ngModel)]="tempo"
+      min="1"
+      max="300"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Time Signature</mat-label>
+    <input
+      type="number"
+      name="timeSignature"
+      formControlName="timeSignature"
+      matInput
+      placeholder="tempo"
+      [(ngModel)]="timeSignature"
+      min="1"
+      max="16"
+    />
+    <span>4</span>
+  </mat-form-field>
+
+  <button mat-button (click)="handleLoop()">
+    <mat-icon>play_arrow</mat-icon>
+    Play!
+  </button>
+</form>
+
+<div class="instrument-row">
+  <div class="instrument">
+    <!-- <mat-select>
+      <mat-option></mat-option>
+    </mat-select> -->
+  </div>
+
+  <ng-container *ngFor="let t of beatLength$ | async">
+    {{ t }}
+    <div class="d1"></div>
+    <div class="d1"></div>
+    <div class="d1"></div>
+    <div class="d1"></div>
+  </ng-container>
+</div>
+<!-- </div> -->

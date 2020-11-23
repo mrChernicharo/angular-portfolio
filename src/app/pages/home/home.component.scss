@@ -1,20 +1,53 @@
+.container:after {
+  // Hack pro background opaco não interferir com o texto
+  content: "";
+  background: rgba(0, 0, 0, 0.1)
+    url("https://media.giphy.com/media/3oxHQGVPrFKfHJjdde/giphy.gif") no-repeat
+    center fixed;
+  background-size: cover;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+  z-index: -1; /* <- Importante */
+  opacity: 0.2; /* Here is your opacity */
+}
+
 .container {
-  .overlay {
-    position: fixed; /* Sit on top of the page content */
-    display: block; /* Hidden by default */
-    width: 100%; /* Full width (cover the whole page) */
-    height: 100%; /* Full height (cover the whole page) */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
-    background-image: rgba(0, 0, 0, 0.5); /* Black background with opacity */
-    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
-    cursor: pointer; /* Add a pointer on hover */
-    img {
-      margin: 64px 0 0 0;
-      width: -webkit-fill-available;
+  position: relative;
+  width: 100vw;
+  height: calc(100vh - 66px);
+}
+.text-box {
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  span {
+    font-size: 36px;
+    color: #fff;
+    margin: 10px;
+
+    &.span1 {
+      letter-spacing: 10px;
     }
+    &.span2 {
+      letter-spacing: 1px;
+    }
+    &.span3 {
+      letter-spacing: 4px;
+    }
+    &.span4 {
+      letter-spacing: 1px;
+    }
+  }
+}
+@media screen and (max-width: 440px) {
+  span {
+    font-size: 24px !important;
+    margin: 4px !important;
   }
 }
