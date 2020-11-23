@@ -43,12 +43,14 @@
     </mat-select> -->
   </div>
 
-  <ng-container *ngFor="let t of beatLength$ | async">
-    {{ t }}
-    <div class="d1"></div>
-    <div class="d1"></div>
-    <div class="d1"></div>
-    <div class="d1"></div>
+  <ng-container
+    *ngFor="let b of beatLength$ | async as beatLength; let beat = index"
+  >
+    &nbsp;
+
+    <ng-container *ngFor="let d of [1, 2, 3, 4]; let position = index">
+      <div #note class="d" (click)="setNote(beat, position)"></div>
+    </ng-container>
   </ng-container>
 </div>
 <!-- </div> -->

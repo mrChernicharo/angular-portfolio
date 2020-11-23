@@ -1,7 +1,15 @@
-.d1 {
+.d {
   box-sizing: border-box;
   display: inline-block;
   width: 20px;
   height: 20px;
   border: 1px solid #fff;
+
+  &.current {
+    background-color: lawngreen;
+  }
+
+  &.note {
+    background-color: royalblue;
+  }
 }

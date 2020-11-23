@@ -1,4 +1,13 @@
-import { Component, OnInit } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  Renderer2,
+  ViewChild,
+  ViewChildren,
+  ViewContainerRef,
+} from "@angular/core";
 import {
   FormBuilder,
   FormControl,
@@ -14,23 +23,19 @@ import { debounceTime, map, tap, throttleTime } from "rxjs/operators";
   styleUrls: ["./live-examples.component.scss"],
 })
 export class LiveExamplesComponent implements OnInit {
+  @ViewChildren("form", { read: ElementRef }) notes: QueryList<any>;
   tempo = 100;
   timeSignature = 4;
   isPlaying = false;
+  click;
   timeSignature$ = new BehaviorSubject(4);
   beatLength$: Observable<any[]>;
   form: FormGroup;
   instruments = ["hi-hat", "snare", "bass-kick"];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private r: Renderer2) {}
 
   ngOnInit(): void {
-    this.timeSignature$.pipe(debounceTime(300)).subscribe((time) => {
-      const arr = [];
-      arr.length = time;
-      this.beatLength$ = of(arr);
-    });
-
     this.form = this.fb.group({
       tempo: [100, Validators.max(300)],
       timeSignature: [4],
@@ -41,6 +46,12 @@ export class LiveExamplesComponent implements OnInit {
       this.timeSignature$.next(formValue["timeSignature"]);
     });
 
+    this.timeSignature$.pipe(debounceTime(300)).subscribe((timeSig) => {
+      const arr = [];
+      arr.length = timeSig;
+      this.beatLength$ = of(arr);
+    });
+
     // this.beatLength$.pipe(
     //   map((d) => (d.length = this.timeSignature * 4)),
     //   tap((d) => console.log(d))
@@ -49,11 +60,33 @@ export class LiveExamplesComponent implements OnInit {
 
   onSubmit() {}
 
+  setNote(beat, position) {
+    console.log(beat + 1);
+    console.log(position + 1);
+    console.log(this.notes);
+
+    // console.log((position + 1) * (beat + 1));
+
+    // this.notes.forEach((note) => console.log(note));
+
+    const notes = document.querySelectorAll(".d");
+    console.log(notes);
+    // this.r.addClass(notes[i], "note");
+    // console.log(e.target);
+    // this.r.addClass(this, "note");
+  }
+
   handleLoop() {
     this.isPlaying = !this.isPlaying;
+
+    if (!this.isPlaying) {
+      return;
+    }
   }
 
   animate() {
     document.querySelector("");
   }
 }
+
+function sound(src) {}
