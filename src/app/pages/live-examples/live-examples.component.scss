@@ -1,3 +1,18 @@
+form {
+  border: 1px solid lightgreen;
+}
+
+.instrument-row {
+  border: 1px solid blue;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  .instrument {
+    border: 1px solid dodgerblue;
+  }
+}
+
 .note {
   box-sizing: border-box;
   display: inline-block;

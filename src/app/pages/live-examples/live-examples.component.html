@@ -47,10 +47,16 @@
 
 <div class="instrument-row">
   <div class="instrument">
-    instrument
-    <!-- <mat-select>
-      <mat-option></mat-option>
-    </mat-select> -->
+    <mat-form-field appearance="standard">
+      <mat-label>instrument</mat-label>
+      <mat-select>
+        <mat-option
+          [value]="instrument"
+          *ngFor="let instrument of instruments"
+          >{{ instrument }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
   </div>
 
   <ng-container
@@ -63,4 +69,5 @@
     </ng-container>
   </ng-container>
 </div>
+
 <!-- </div> -->
