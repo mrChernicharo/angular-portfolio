@@ -1,18 +1,15 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-
-interface Note {
-  isActive: boolean;
-}
+import { Note } from "../groove.service";
 
 @Component({
-  selector: "app-instrument-row",
-  templateUrl: "./instrument-row.component.html",
-  styleUrls: ["./instrument-row.component.scss"],
+  selector: "app-track",
+  templateUrl: "./track.component.html",
+  styleUrls: ["./track.component.scss"],
 })
-export class InstrumentRowComponent implements OnInit {
+export class TrackComponent implements OnInit {
   instruments = ["hi-hat", "snare", "bass-kick"];
-  @Input() measureLength;
+  @Input() barLength;
   notes$ = new BehaviorSubject<Note[]>([]);
   constructor() {}
 

@@ -1,0 +1,17 @@
+form {
+  border: 1px solid lightgreen;
+}
+.instruments-controls {
+  display: inline-block;
+  border: 1px solid #898989;
+  width: 128px;
+  margin: 10px 0 0;
+  transform: translateY(10px);
+}
+
+#label {
+  position: absolute;
+  margin: 0 0px 0 28px;
+  font-weight: 300;
+  font-size: 12px;
+}

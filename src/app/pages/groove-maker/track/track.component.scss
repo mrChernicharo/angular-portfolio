@@ -1,0 +1,26 @@
+.instrument-row {
+  border: 1px solid blue;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  .instrument {
+    border: 1px solid dodgerblue;
+  }
+}
+
+.note {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #fff;
+
+  &.current {
+    background-color: lawngreen;
+  }
+
+  &.clicked {
+    background-color: royalblue;
+  }
+}

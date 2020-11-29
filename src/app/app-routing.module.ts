@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 import { AboutComponent } from "./pages/about/about.component";
+import { GrooveMakerComponent } from "./pages/groove-maker/groove-maker.component";
 import { BlogComponent } from "./pages/blog/blog.component";
 import { HomeComponent } from "./pages/home/home.component";
 import { LiveExamplesComponent } from "./pages/live-examples/live-examples.component";
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: "skills", component: SkillsComponent },
   { path: "projects", component: ProjectsComponent },
   { path: "about", component: AboutComponent },
+  { path: "groove", component: GrooveMakerComponent },
   { path: "live", component: LiveExamplesComponent },
   { path: "blog", component: BlogComponent },
 ];

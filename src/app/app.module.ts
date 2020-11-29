@@ -31,7 +31,9 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { NavComponent } from "./components/nav/nav.component";
 import { LiveExamplesComponent } from "./pages/live-examples/live-examples.component";
 import { BlogComponent } from "./pages/blog/blog.component";
-import { InstrumentRowComponent } from './pages/live-examples/instrument-row/instrument-row.component';
+import { InstrumentRowComponent } from "./pages/live-examples/instrument-row/instrument-row.component";
+import { GrooveMakerComponent } from "./pages/groove-maker/groove-maker.component";
+import { TrackComponent } from './pages/groove-maker/track/track.component';
 
 const matModules = [
   MatButtonModule,
@@ -53,14 +55,16 @@ const matModules = [
 @NgModule({
   declarations: [
     AppComponent,
+    NavComponent,
+    BlogComponent,
     HomeComponent,
     SkillsComponent,
-    AboutComponent,
     ProjectsComponent,
-    NavComponent,
     LiveExamplesComponent,
-    BlogComponent,
     InstrumentRowComponent,
+    GrooveMakerComponent,
+    AboutComponent,
+    TrackComponent,
   ],
   imports: [
     BrowserModule,
