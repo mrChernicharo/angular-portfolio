@@ -1,8 +1,16 @@
 import { newArray } from "@angular/compiler/src/util";
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, Renderer2 } from "@angular/core";
 import { BehaviorSubject, from, generate, Observable, of } from "rxjs";
-import { mapTo, switchAll, switchMap, tap } from "rxjs/operators";
-import { GrooveService, Note, TimeFormule } from "../groove.service";
+import {
+  delay,
+  filter,
+  map,
+  mapTo,
+  switchAll,
+  switchMap,
+  tap,
+} from "rxjs/operators";
+import { GrooveService, Note, TimeFormule, Track } from "../groove.service";
 
 @Component({
   selector: "app-track",
@@ -12,46 +20,52 @@ import { GrooveService, Note, TimeFormule } from "../groove.service";
 export class TrackComponent implements OnInit {
   instruments = ["hi-hat", "snare", "bass-kick"];
   @Input() index: number;
-  // @Input() pulses: number;
-  // @Input() ticks: number;
-  // pulses$: Observable<>
-  notes$: Observable<Note[]>;
-  timeFormule$: Observable<TimeFormule>;
+
+  LocalNotes: Note[] = [];
+  localTrack: Track;
+  barFormule$: Observable<TimeFormule>;
+  // notes$: Observable<Note[]>;
+  notes$ = new BehaviorSubject<Note[]>([]);
   ticks$: Observable<Note[]>;
   pulses$: Observable<Note[]>;
-  constructor(private groove: GrooveService) {}
+
+  constructor(private groove: GrooveService, private renderer: Renderer2) {}
 
   ngOnInit(): void {
-    // this.notes$.next(Array.from(this.measureLength));
-    // this.notes$ = this.makeBlankNotesArray(this.pulses, this.ticks);
-    this.timeFormule$ = this.groove.timeFormule$.pipe(
+    this.barFormule$ = this.groove.timeFormule$.pipe(
       tap((timeForm) => {
-        console.log(timeForm);
         this.pulses$ = of(new Array<Note>(timeForm.pulses));
         this.ticks$ = of(new Array<Note>(timeForm.ticks));
+      }),
+      delay(10),
+      tap((timeForm) => {
+        this.LocalNotes = new Array<Note>(timeForm.pulses * timeForm.ticks);
+        this.notes$.next(this.LocalNotes);
+        this.groove.setTracks(timeForm.pulses * timeForm.ticks);
       })
     );
   }
 
-  makeBlankNotesArray(pulses, ticks) {
-    const barLength = pulses * ticks;
-    const blankNotesArr = new Array<Note>(barLength);
-    console.log(blankNotesArr);
-    return of(blankNotesArr);
+  public updateNote(tick, pulse, event: Event) {
+    console.log(this.index);
+    console.log(tick);
+    console.log(pulse);
+    console.log(event);
+
+    console.log(this.LocalNotes);
+
+    // this.groove.updateTrackNotes(this.index, )
+
+    const noteEl = event.target as Element;
+
+    noteEl.classList.contains("selected")
+      ? this.renderer.removeClass(event.target, "selected")
+      : this.renderer.addClass(event.target, "selected");
   }
 
-  // selectNote(beat, position) {
-  //   console.log(beat + 1);
-  //   console.log(position + 1);
+  setInstrument(index: number) {
+    console.log(this.instruments[index]);
 
-  //   let clickedBeatIndex = beat * 4 + position;
-  //   console.log(clickedBeatIndex);
-
-  //   const notes = document.querySelectorAll(".note");
-  //   // console.log(notes);
-
-  //   notes[clickedBeatIndex].classList.contains("clicked")
-  //     ? notes[clickedBeatIndex].classList.remove("clicked")
-  //     : notes[clickedBeatIndex].classList.add("clicked");
-  // }
+    this.groove.setTrackInstrument(this.index, this.instruments[index]);
+  }
 }

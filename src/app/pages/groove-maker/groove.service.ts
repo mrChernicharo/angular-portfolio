@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 
 export interface TimeFormule {
   pulses: number;
@@ -20,17 +21,25 @@ export interface Track {
   providedIn: "root",
 })
 export class GrooveService {
-  private _trackStore: Track[] = [{ instrument: "", notes: [], index: 0 }];
-  tracks$ = new BehaviorSubject<Track[]>([
-    { instrument: "", notes: [], index: 0 },
-  ]);
-
+  // private _trackStore: Track[] = [{ instrument: "", notes: [], index: 0 }];
+  private _trackStore: Track[] = [];
+  tracks$ = new BehaviorSubject<Track[]>([]);
+  currentLength: number;
   tempo$ = new BehaviorSubject<number>(100);
   timeFormule$ = new BehaviorSubject<TimeFormule>({ pulses: 4, ticks: 4 });
   isPlaying = new BehaviorSubject<boolean>(false);
   barLength$: Observable<number>;
 
-  constructor() {}
+  constructor() {
+    this.tracks$
+      .pipe(
+        tap((tracks) => {
+          console.dir(tracks);
+          this.currentLength = tracks.length;
+        })
+      )
+      .subscribe();
+  }
 
   addTrack() {
     const newEmptyTrack: Track = {
@@ -50,6 +59,25 @@ export class GrooveService {
     this.tracks$.next(this._trackStore);
     console.dir(this._trackStore);
   }
+
+  setTracks(barLength: number) {
+    this._trackStore.forEach((track, i) => {
+      this._trackStore[i].instrument = track.instrument;
+      this._trackStore[i].notes = new Array(barLength);
+    });
+  }
+
+  setTrackInstrument(i: number, instrument: string) {
+    this._trackStore[i].instrument = instrument;
+  }
+
+  updateTrackNotes(i: number, notes: Note[]) {}
+
+  // setTrackNotes(trackIndex: number, notes?: Note[]) {
+  //   notes
+  //     ? (this._trackStore[trackIndex].notes = [...notes])
+  //     : (this._trackStore[trackIndex].notes = new Array(this.currentLength));
+  // }
 
   playGroove() {
     console.log("play!");

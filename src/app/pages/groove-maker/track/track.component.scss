@@ -25,7 +25,7 @@
   //     background-color: lawngreen;
   //   }
 
-  //   &.clicked {
-  //     background-color: royalblue;
-  //   }
+  &.selected {
+    background-color: royalblue;
+  }
 }

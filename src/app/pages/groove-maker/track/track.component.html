@@ -4,30 +4,40 @@
       <mat-label>instrument {{ index + 1 }}</mat-label>
       <mat-select>
         <mat-option
+          (click)="setInstrument(i)"
           [value]="instrument"
-          *ngFor="let instrument of instruments"
+          *ngFor="let instrument of instruments; let i = index"
           >{{ instrument }}</mat-option
         >
       </mat-select>
     </mat-form-field>
   </div>
 
-  <div class="notes-row" *ngIf="timeFormule$ | async">
-    <!-- <ng-container *ngFor="let time of timeFormule$ | async"> -->
-    <div class="pulse" *ngFor="let pulse of pulses$ | async; let p = index">
-      {{ p + 1 }}
-      <div class="note" *ngFor="let note of ticks$ | async; let t = index">
-        {{ t + 1 }}
+  <ng-container *ngIf="notes$ | async">
+    <div class="notes-row" *ngIf="barFormule$ | async">
+      <!-- <ng-container *ngFor="let time of timeFormule$ | async"> -->
+      <div
+        class="pulse"
+        *ngFor="let arrPiece of pulses$ | async; let pulse = index"
+      >
+        {{ pulse + 1 }}
+        <div
+          class="note"
+          (click)="updateNote(tick, pulse, $event)"
+          *ngFor="let note of ticks$ | async; let tick = index"
+        >
+          {{ tick + 1 }}
+        </div>
       </div>
+      <!-- </ng-container> -->
     </div>
-    <!-- </ng-container> -->
-  </div>
 
-  <!-- <ng-container *ngFor="let pulse of barLength; let beat = index">
+    <!-- <ng-container *ngFor="let pulse of barLength; let beat = index">
     &nbsp;
 
     <ng-container *ngFor="let d of [1, 2, 3, 4]; let position = index">
       <div #note class="note" (click)="selectNote(beat, position)"></div>
     </ng-container>
   </ng-container> -->
+  </ng-container>
 </div>
