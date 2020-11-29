@@ -1,4 +1,4 @@
-<h1>Beat Maker</h1>
+<h1>Groove Maker</h1>
 
 <form [formGroup]="form" matForm>
   <mat-form-field appearance="outline">
@@ -68,7 +68,7 @@
 
 <div class="children">
   <ng-container *ngFor="let track of tracks$ | async; let trackIndex = index">
-    <app-track [pulses] [ticks]></app-track>
+    <app-track [index]="trackIndex"></app-track>
   </ng-container>
 </div>
 

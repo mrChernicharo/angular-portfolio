@@ -1,7 +1,7 @@
 <div class="instrument-row">
   <div class="instrument">
     <mat-form-field appearance="standard">
-      <mat-label>instrument</mat-label>
+      <mat-label>instrument {{ index + 1 }}</mat-label>
       <mat-select>
         <mat-option
           [value]="instrument"
@@ -12,11 +12,22 @@
     </mat-form-field>
   </div>
 
-  <ng-container *ngFor="let pulse of barLength; let beat = index">
+  <div class="notes-row" *ngIf="timeFormule$ | async">
+    <!-- <ng-container *ngFor="let time of timeFormule$ | async"> -->
+    <div class="pulse" *ngFor="let pulse of pulses$ | async; let p = index">
+      {{ p + 1 }}
+      <div class="note" *ngFor="let note of ticks$ | async; let t = index">
+        {{ t + 1 }}
+      </div>
+    </div>
+    <!-- </ng-container> -->
+  </div>
+
+  <!-- <ng-container *ngFor="let pulse of barLength; let beat = index">
     &nbsp;
 
     <ng-container *ngFor="let d of [1, 2, 3, 4]; let position = index">
       <div #note class="note" (click)="selectNote(beat, position)"></div>
     </ng-container>
-  </ng-container>
+  </ng-container> -->
 </div>

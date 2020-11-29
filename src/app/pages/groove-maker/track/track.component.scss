@@ -9,18 +9,23 @@
   }
 }
 
+.pulse {
+  display: inline-block;
+}
+
 .note {
   box-sizing: border-box;
   display: inline-block;
   width: 20px;
   height: 20px;
   border: 1px solid #fff;
+  cursor: pointer;
 
-  &.current {
-    background-color: lawngreen;
-  }
+  //   &.current {
+  //     background-color: lawngreen;
+  //   }
 
-  &.clicked {
-    background-color: royalblue;
-  }
+  //   &.clicked {
+  //     background-color: royalblue;
+  //   }
 }

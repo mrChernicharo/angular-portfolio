@@ -20,8 +20,11 @@ export interface Track {
   providedIn: "root",
 })
 export class GrooveService {
-  private _trackStore: Track[] = [];
-  tracks$ = new BehaviorSubject<Track[]>([]);
+  private _trackStore: Track[] = [{ instrument: "", notes: [], index: 0 }];
+  tracks$ = new BehaviorSubject<Track[]>([
+    { instrument: "", notes: [], index: 0 },
+  ]);
+
   tempo$ = new BehaviorSubject<number>(100);
   timeFormule$ = new BehaviorSubject<TimeFormule>({ pulses: 4, ticks: 4 });
   isPlaying = new BehaviorSubject<boolean>(false);

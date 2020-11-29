@@ -1,9 +1,9 @@
 import { Component, OnInit, Renderer2 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { BehaviorSubject, Observable, of } from "rxjs";
-import { debounceTime } from "rxjs/operators";
+import { debounceTime, distinctUntilChanged, map, tap } from "rxjs/operators";
 import { appSounds } from "../live-examples/app.sounds";
-import { GrooveService } from "./groove.service";
+import { GrooveService, TimeFormule } from "./groove.service";
 
 @Component({
   selector: "app-groove-maker",
@@ -12,7 +12,7 @@ import { GrooveService } from "./groove.service";
 })
 export class GrooveMakerComponent implements OnInit {
   tempo = 100;
-  timeFormule = 2;
+  // timeFormule = 2;
   trackCount = 1;
   tracks$;
 
@@ -20,7 +20,9 @@ export class GrooveMakerComponent implements OnInit {
   isPlaying = false;
   isClickOn = true;
   click;
-  timeFormule$ = new BehaviorSubject(2);
+  timeFormule$ = new BehaviorSubject<TimeFormule>({ pulses: 4, ticks: 4 });
+  ticks$: Observable<number>;
+  pulses$: Observable<number>;
   form: FormGroup;
 
   constructor(
@@ -43,12 +45,9 @@ export class GrooveMakerComponent implements OnInit {
 
     // })
 
-    this.form.valueChanges.pipe(debounceTime(300)).subscribe((formValue) => {
+    this.grooveChanged().subscribe((formValue) => {
       console.log(formValue);
-      console.log("trackCount: " + this.trackCount);
-      // this.timeFormule$.next(formValue["timeFormule"]);
-      // this.clickOn = formValue["clickOn"];
-      // this.tempo = formValue["tempo"];
+      this.groove.timeFormule$.next(formValue);
     });
 
     this.timeFormule$.pipe(debounceTime(300)).subscribe((timeFormule) => {
@@ -58,10 +57,30 @@ export class GrooveMakerComponent implements OnInit {
     });
   }
 
-  onSubmit() {}
+  grooveChanged(): Observable<any> {
+    return this.form.valueChanges.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      tap((formVal) => {
+        console.log("trackCount: " + this.trackCount);
+
+        const pulses = formVal["pulses"];
+        const ticks = formVal["ticks"];
+
+        this.timeFormule$.next(Object.assign({}, { pulses, ticks }));
+
+        this.pulses$ = of(pulses);
+        this.ticks$ = of(ticks);
+        // this.clickOn = formValue["clickOn"];
+        // this.tempo = formValue["tempo"];
+      })
+    );
+  }
+
+  // onSubmit() {}
 
   addInstrumentTrack() {
-    if (this.trackCount < 10) {
+    if (this.trackCount < 6) {
       this.trackCount += 1;
       this.groove.addTrack();
     } else {
