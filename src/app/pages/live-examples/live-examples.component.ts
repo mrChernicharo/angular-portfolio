@@ -38,7 +38,7 @@ export class LiveExamplesComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      tempo: [100, Validators.max(300)],
+      tempo: [100, [Validators.max(300), Validators.min(40)]],
       timeSignature: [this.timeSignature],
     });
 
@@ -78,6 +78,7 @@ export class LiveExamplesComponent implements OnInit {
     console.log("is playing ->" + this.isPlaying);
     const notes = document.querySelectorAll(".d");
 
+    // pause
     if (!this.isPlaying) {
       notes.forEach((note, i) => {
         notes[i].classList.contains("current")
@@ -103,6 +104,12 @@ export class LiveExamplesComponent implements OnInit {
 
       if (i === notes.length) {
         notes[0].classList.add("current");
+      }
+
+      // som do click
+      if (i % 4 === 0) {
+        let audio = new Audio(`../../../assets/sounds/tick.mp3`);
+        audio.play();
       }
 
       if (i < notes.length - 1) {
