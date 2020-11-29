@@ -33,7 +33,7 @@
 
   <mat-slide-toggle formControlName="clickOn">Click</mat-slide-toggle>
 
-  <button mat-button (click)="handleLoop()">
+  <button mat-button (click)="toggleLoop()">
     <ng-container *ngIf="!isPlaying">
       <mat-icon>play_arrow</mat-icon>
       Play!
@@ -44,10 +44,24 @@
       Pause
     </ng-container>
   </button>
+
+  <label id="label">instruments</label>
+
+  <div class="instruments-controls">
+    <button mat-button (click)="addInstrumentTrack()">
+      <mat-icon>add</mat-icon>
+    </button>
+
+    <button mat-button (click)="removeInstrumentTrack()">
+      <mat-icon>remove</mat-icon>
+    </button>
+  </div>
 </form>
 
 <div class="children">
-  <app-instrument-row [beatLength]="beatLength$ | async"></app-instrument-row>
+  <app-instrument-row
+    [measureLength]="measureLength$ | async"
+  ></app-instrument-row>
 </div>
 
 <!-- </div> -->

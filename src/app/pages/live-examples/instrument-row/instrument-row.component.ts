@@ -1,4 +1,9 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { BehaviorSubject } from "rxjs";
+
+interface Note {
+  isActive: boolean;
+}
 
 @Component({
   selector: "app-instrument-row",
@@ -7,10 +12,13 @@ import { Component, Input, OnInit } from "@angular/core";
 })
 export class InstrumentRowComponent implements OnInit {
   instruments = ["hi-hat", "snare", "bass-kick"];
-  @Input() beatLength;
+  @Input() measureLength;
+  notes$ = new BehaviorSubject<Note[]>([]);
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.notes$.next(Array.from(this.measureLength));
+  }
 
   selectNote(beat, position) {
     console.log(beat + 1);

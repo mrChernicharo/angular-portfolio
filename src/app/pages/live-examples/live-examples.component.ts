@@ -26,7 +26,7 @@ interface note {}
   styleUrls: ["./live-examples.component.scss"],
 })
 export class LiveExamplesComponent implements OnInit {
-  @ViewChildren("form", { read: ElementRef }) notes: QueryList<any>;
+  // @ViewChildren("form", { read: ElementRef }) notes: QueryList<any>;
   tempo = 100;
   timeSignature = 2;
   isPlaying$ = new BehaviorSubject<boolean>(false);
@@ -34,9 +34,9 @@ export class LiveExamplesComponent implements OnInit {
   clickOn = true;
   click;
   timeSignature$ = new BehaviorSubject(2);
-  beatLength$: Observable<any[]>;
+  measureLength$: Observable<any[]>;
   form: FormGroup;
-  instruments = ["hi-hat", "snare", "bass-kick"];
+  // instruments = ["hi-hat", "snare", "bass-kick"];
 
   constructor(private fb: FormBuilder, private r: Renderer2) {}
 
@@ -57,13 +57,17 @@ export class LiveExamplesComponent implements OnInit {
     this.timeSignature$.pipe(debounceTime(300)).subscribe((timeSig) => {
       const arr = [];
       arr.length = timeSig;
-      this.beatLength$ = of(arr);
+      this.measureLength$ = of(arr);
     });
   }
 
   onSubmit() {}
 
-  handleLoop() {
+  addInstrumentTrack() {}
+
+  removeInstrumentTrack() {}
+
+  toggleLoop() {
     this.isPlaying = !this.isPlaying;
     console.log("is playing ->" + this.isPlaying);
     const notes = document.querySelectorAll(".note");
