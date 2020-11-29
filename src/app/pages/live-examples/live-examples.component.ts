@@ -14,7 +14,7 @@ import {
   FormGroup,
   Validators,
 } from "@angular/forms";
-import { BehaviorSubject, from, Observable, of } from "rxjs";
+import { BehaviorSubject, from, interval, Observable, of } from "rxjs";
 import { debounceTime, map, tap, throttleTime } from "rxjs/operators";
 
 @Component({
@@ -25,10 +25,11 @@ import { debounceTime, map, tap, throttleTime } from "rxjs/operators";
 export class LiveExamplesComponent implements OnInit {
   @ViewChildren("form", { read: ElementRef }) notes: QueryList<any>;
   tempo = 100;
-  timeSignature = 4;
+  timeSignature = 2;
+  isPlaying$ = new BehaviorSubject<boolean>(false);
   isPlaying = false;
   click;
-  timeSignature$ = new BehaviorSubject(4);
+  timeSignature$ = new BehaviorSubject(2);
   beatLength$: Observable<any[]>;
   form: FormGroup;
   instruments = ["hi-hat", "snare", "bass-kick"];
@@ -38,7 +39,7 @@ export class LiveExamplesComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       tempo: [100, Validators.max(300)],
-      timeSignature: [4],
+      timeSignature: [this.timeSignature],
     });
 
     this.form.valueChanges.pipe(debounceTime(300)).subscribe((formValue) => {
@@ -51,37 +52,65 @@ export class LiveExamplesComponent implements OnInit {
       arr.length = timeSig;
       this.beatLength$ = of(arr);
     });
-
-    // this.beatLength$.pipe(
-    //   map((d) => (d.length = this.timeSignature * 4)),
-    //   tap((d) => console.log(d))
-    // );
   }
 
   onSubmit() {}
 
-  setNote(beat, position) {
+  selectNote(beat, position) {
+    let selectedNotes = [];
+
     console.log(beat + 1);
     console.log(position + 1);
-    console.log(this.notes);
 
-    // console.log((position + 1) * (beat + 1));
-
-    // this.notes.forEach((note) => console.log(note));
+    let clickedBeatIndex = beat * 4 + position;
+    console.log(clickedBeatIndex);
 
     const notes = document.querySelectorAll(".d");
     console.log(notes);
-    // this.r.addClass(notes[i], "note");
-    // console.log(e.target);
-    // this.r.addClass(this, "note");
+
+    notes[clickedBeatIndex].classList.contains("clicked")
+      ? notes[clickedBeatIndex].classList.remove("clicked")
+      : notes[clickedBeatIndex].classList.add("clicked");
   }
 
   handleLoop() {
     this.isPlaying = !this.isPlaying;
+    console.log("is playing ->" + this.isPlaying);
+    const notes = document.querySelectorAll(".d");
 
     if (!this.isPlaying) {
+      notes.forEach((note, i) => {
+        notes[i].classList.contains("current")
+          ? notes[i].classList.remove("current")
+          : null;
+      });
+      clearInterval(this.click);
       return;
     }
+
+    // controle do loop
+    let i = 0;
+    this.click = setInterval(() => {
+      notes[i].classList.add("current");
+
+      if (i !== 0) {
+        notes[i - 1].classList.remove("current");
+      }
+
+      if (i === 0) {
+        notes[notes.length - 1].classList.remove("current");
+      }
+
+      if (i === notes.length) {
+        notes[0].classList.add("current");
+      }
+
+      if (i < notes.length - 1) {
+        i++;
+      } else {
+        i = 0;
+      }
+    }, (30 / this.tempo) * 1000);
   }
 
   animate() {

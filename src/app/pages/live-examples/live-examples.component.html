@@ -31,8 +31,15 @@
   </mat-form-field>
 
   <button mat-button (click)="handleLoop()">
-    <mat-icon>play_arrow</mat-icon>
-    Play!
+    <ng-container *ngIf="!isPlaying">
+      <mat-icon>play_arrow</mat-icon>
+      Play!
+    </ng-container>
+
+    <ng-container *ngIf="isPlaying">
+      <mat-icon>pause</mat-icon>
+      Pause
+    </ng-container>
   </button>
 </form>
 
@@ -49,7 +56,7 @@
     &nbsp;
 
     <ng-container *ngFor="let d of [1, 2, 3, 4]; let position = index">
-      <div #note class="d" (click)="setNote(beat, position)"></div>
+      <div #note class="d" (click)="selectNote(beat, position)"></div>
     </ng-container>
   </ng-container>
 </div>
