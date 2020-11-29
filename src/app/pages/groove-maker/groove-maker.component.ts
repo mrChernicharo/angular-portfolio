@@ -13,17 +13,15 @@ import { GrooveService } from "./groove.service";
 export class GrooveMakerComponent implements OnInit {
   tempo = 100;
   timeFormule = 2;
-  // isPlaying$ = new BehaviorSubject<boolean>(false);
   trackCount = 1;
-  tracks;
+  tracks$;
 
+  // isPlaying$ = new BehaviorSubject<boolean>(false);
   isPlaying = false;
   isClickOn = true;
   click;
   timeFormule$ = new BehaviorSubject(2);
-  barLength$: Observable<any[]>;
   form: FormGroup;
-  // instruments = ["hi-hat", "snare", "bass-kick"];
 
   constructor(
     private fb: FormBuilder,
@@ -39,6 +37,11 @@ export class GrooveMakerComponent implements OnInit {
       ticks: [4],
       isClickOn: [this.isClickOn],
     });
+
+    this.tracks$ = this.groove.tracks$;
+    // .subscribe(tracks => {
+
+    // })
 
     this.form.valueChanges.pipe(debounceTime(300)).subscribe((formValue) => {
       console.log(formValue);

@@ -13,13 +13,14 @@ export interface Note {
 export interface Track {
   instrument: string;
   notes: Note[];
+  index: number;
 }
 
 @Injectable({
   providedIn: "root",
 })
 export class GrooveService {
-  private _trackStore: Track[];
+  private _trackStore: Track[] = [];
   tracks$ = new BehaviorSubject<Track[]>([]);
   tempo$ = new BehaviorSubject<number>(100);
   timeFormule$ = new BehaviorSubject<TimeFormule>({ pulses: 4, ticks: 4 });
@@ -29,13 +30,22 @@ export class GrooveService {
   constructor() {}
 
   addTrack() {
-    const newTrack: Track = { instrument: "", notes: [] };
-    this.tracks$.next([...this._trackStore, newTrack]);
+    const newEmptyTrack: Track = {
+      instrument: "",
+      notes: [],
+      index: this._trackStore.length,
+    };
+    this._trackStore.push(newEmptyTrack);
+
+    this.tracks$.next(this._trackStore);
+    console.dir(this._trackStore);
   }
 
   removeTrack() {
     this._trackStore.pop();
+
     this.tracks$.next(this._trackStore);
+    console.dir(this._trackStore);
   }
 
   playGroove() {

@@ -67,8 +67,8 @@
 </form>
 
 <div class="children">
-  <ng-container *ngFor="let track of trackCount; let trackIndex = index">
-    <app-track [barLength]="barLength$ | async" [pulses] [ticks]></app-track>
+  <ng-container *ngFor="let track of tracks$ | async; let trackIndex = index">
+    <app-track [pulses] [ticks]></app-track>
   </ng-container>
 </div>
 
