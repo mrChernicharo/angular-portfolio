@@ -30,6 +30,8 @@
     <span>4</span>
   </mat-form-field>
 
+  <mat-slide-toggle formControlName="clickOn">Click</mat-slide-toggle>
+
   <button mat-button (click)="handleLoop()">
     <ng-container *ngIf="!isPlaying">
       <mat-icon>play_arrow</mat-icon>
@@ -45,6 +47,7 @@
 
 <div class="instrument-row">
   <div class="instrument">
+    instrument
     <!-- <mat-select>
       <mat-option></mat-option>
     </mat-select> -->
@@ -56,7 +59,7 @@
     &nbsp;
 
     <ng-container *ngFor="let d of [1, 2, 3, 4]; let position = index">
-      <div #note class="d" (click)="selectNote(beat, position)"></div>
+      <div #note class="note" (click)="selectNote(beat, position)"></div>
     </ng-container>
   </ng-container>
 </div>

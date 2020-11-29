@@ -16,6 +16,7 @@ import {
 } from "@angular/forms";
 import { BehaviorSubject, from, interval, Observable, of } from "rxjs";
 import { debounceTime, map, tap, throttleTime } from "rxjs/operators";
+import { appSounds } from "./app.sounds";
 
 @Component({
   selector: "app-live-examples",
@@ -28,6 +29,7 @@ export class LiveExamplesComponent implements OnInit {
   timeSignature = 2;
   isPlaying$ = new BehaviorSubject<boolean>(false);
   isPlaying = false;
+  clickOn = true;
   click;
   timeSignature$ = new BehaviorSubject(2);
   beatLength$: Observable<any[]>;
@@ -40,11 +42,14 @@ export class LiveExamplesComponent implements OnInit {
     this.form = this.fb.group({
       tempo: [100, [Validators.max(300), Validators.min(40)]],
       timeSignature: [this.timeSignature],
+      clickOn: [this.clickOn],
     });
 
     this.form.valueChanges.pipe(debounceTime(300)).subscribe((formValue) => {
       console.log(formValue);
       this.timeSignature$.next(formValue["timeSignature"]);
+      this.clickOn = formValue["clickOn"];
+      this.tempo = formValue["tempo"];
     });
 
     this.timeSignature$.pipe(debounceTime(300)).subscribe((timeSig) => {
@@ -57,16 +62,14 @@ export class LiveExamplesComponent implements OnInit {
   onSubmit() {}
 
   selectNote(beat, position) {
-    let selectedNotes = [];
-
     console.log(beat + 1);
     console.log(position + 1);
 
     let clickedBeatIndex = beat * 4 + position;
     console.log(clickedBeatIndex);
 
-    const notes = document.querySelectorAll(".d");
-    console.log(notes);
+    const notes = document.querySelectorAll(".note");
+    // console.log(notes);
 
     notes[clickedBeatIndex].classList.contains("clicked")
       ? notes[clickedBeatIndex].classList.remove("clicked")
@@ -76,7 +79,7 @@ export class LiveExamplesComponent implements OnInit {
   handleLoop() {
     this.isPlaying = !this.isPlaying;
     console.log("is playing ->" + this.isPlaying);
-    const notes = document.querySelectorAll(".d");
+    const notes = document.querySelectorAll(".note");
 
     // pause
     if (!this.isPlaying) {
@@ -107,9 +110,17 @@ export class LiveExamplesComponent implements OnInit {
       }
 
       // som do click
-      if (i % 4 === 0) {
-        let audio = new Audio(`../../../assets/sounds/tick.mp3`);
-        audio.play();
+      if (i % 4 === 0 && this.clickOn) {
+        let clickSound = new Audio(appSounds.click);
+        clickSound.play();
+      }
+
+      if (
+        notes[i].classList.contains("current") &&
+        notes[i].classList.contains("clicked")
+      ) {
+        let instrumentSonud = new Audio(appSounds.snare);
+        instrumentSonud.play();
       }
 
       if (i < notes.length - 1) {
