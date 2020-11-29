@@ -9,7 +9,6 @@
       formControlName="tempo"
       matInput
       placeholder="tempo"
-      [(ngModel)]="tempo"
       min="1"
       max="300"
     />
@@ -23,12 +22,14 @@
       formControlName="timeSignature"
       matInput
       placeholder="tempo"
-      [(ngModel)]="timeSignature"
       min="1"
       max="16"
     />
     <span>4</span>
   </mat-form-field>
+  <!-- [(ngModel)]="tempo" -->
+
+  <!-- [(ngModel)]="timeSignature" -->
 
   <mat-slide-toggle formControlName="clickOn">Click</mat-slide-toggle>
 
@@ -45,29 +46,8 @@
   </button>
 </form>
 
-<div class="instrument-row">
-  <div class="instrument">
-    <mat-form-field appearance="standard">
-      <mat-label>instrument</mat-label>
-      <mat-select>
-        <mat-option
-          [value]="instrument"
-          *ngFor="let instrument of instruments"
-          >{{ instrument }}</mat-option
-        >
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-  <ng-container
-    *ngFor="let b of beatLength$ | async as beatLength; let beat = index"
-  >
-    &nbsp;
-
-    <ng-container *ngFor="let d of [1, 2, 3, 4]; let position = index">
-      <div #note class="note" (click)="selectNote(beat, position)"></div>
-    </ng-container>
-  </ng-container>
+<div class="children">
+  <app-instrument-row [beatLength]="beatLength$ | async"></app-instrument-row>
 </div>
 
 <!-- </div> -->

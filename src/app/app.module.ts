@@ -31,6 +31,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { NavComponent } from "./components/nav/nav.component";
 import { LiveExamplesComponent } from "./pages/live-examples/live-examples.component";
 import { BlogComponent } from "./pages/blog/blog.component";
+import { InstrumentRowComponent } from './pages/live-examples/instrument-row/instrument-row.component';
 
 const matModules = [
   MatButtonModule,
@@ -59,6 +60,7 @@ const matModules = [
     NavComponent,
     LiveExamplesComponent,
     BlogComponent,
+    InstrumentRowComponent,
   ],
   imports: [
     BrowserModule,

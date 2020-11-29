@@ -18,6 +18,8 @@ import { BehaviorSubject, from, interval, Observable, of } from "rxjs";
 import { debounceTime, map, tap, throttleTime } from "rxjs/operators";
 import { appSounds } from "./app.sounds";
 
+interface note {}
+
 @Component({
   selector: "app-live-examples",
   templateUrl: "./live-examples.component.html",
@@ -60,21 +62,6 @@ export class LiveExamplesComponent implements OnInit {
   }
 
   onSubmit() {}
-
-  selectNote(beat, position) {
-    console.log(beat + 1);
-    console.log(position + 1);
-
-    let clickedBeatIndex = beat * 4 + position;
-    console.log(clickedBeatIndex);
-
-    const notes = document.querySelectorAll(".note");
-    // console.log(notes);
-
-    notes[clickedBeatIndex].classList.contains("clicked")
-      ? notes[clickedBeatIndex].classList.remove("clicked")
-      : notes[clickedBeatIndex].classList.add("clicked");
-  }
 
   handleLoop() {
     this.isPlaying = !this.isPlaying;
@@ -119,7 +106,7 @@ export class LiveExamplesComponent implements OnInit {
         notes[i].classList.contains("current") &&
         notes[i].classList.contains("clicked")
       ) {
-        let instrumentSonud = new Audio(appSounds.snare);
+        let instrumentSonud = new Audio(appSounds.bassDrum);
         instrumentSonud.play();
       }
 
@@ -128,12 +115,6 @@ export class LiveExamplesComponent implements OnInit {
       } else {
         i = 0;
       }
-    }, (30 / this.tempo) * 1000);
-  }
-
-  animate() {
-    document.querySelector("");
+    }, (60 / 4 / this.tempo) * 1000);
   }
 }
-
-function sound(src) {}
