@@ -66,13 +66,8 @@ export class GrooveService {
 
   updateTrackNotes(i: number, notes: Note[]) {
     this._trackStore[i].notes = notes;
+    console.log(this._trackStore);
   }
-
-  // setTrackNotes(trackIndex: number, notes?: Note[]) {
-  //   notes
-  //     ? (this._trackStore[trackIndex].notes = [...notes])
-  //     : (this._trackStore[trackIndex].notes = new Array(this.currentLength));
-  // }
 
   playGroove() {
     console.log("play!");

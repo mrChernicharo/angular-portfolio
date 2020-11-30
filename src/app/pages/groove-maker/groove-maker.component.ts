@@ -16,6 +16,7 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
   tracks$: Observable<Track[]>;
   isPlaying = false;
   isClickOn = true;
+  currentLength: number;
   form: FormGroup;
 
   constructor(
@@ -38,10 +39,14 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.grooveChanged().subscribe((formValue) => {
-      console.log(formValue);
-
+    this.form.get("ticks").valueChanges.subscribe((value) => {
       this.cleanActiveNotes();
+    });
+    this.form.get("pulses").valueChanges.subscribe((value) => {
+      this.cleanActiveNotes();
+    });
+
+    this.grooveSettingsChanged().subscribe((formValue) => {
       this.groove.timeFormule$.next(formValue);
     });
 
@@ -52,7 +57,7 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
     this.groove.removeTrack();
   }
 
-  public grooveChanged(): Observable<any> {
+  public grooveSettingsChanged(): Observable<any> {
     return this.form.valueChanges.pipe(
       debounceTime(300),
       distinctUntilChanged()

@@ -66,19 +66,9 @@ export class TrackComponent implements OnInit, AfterViewInit {
   }
 
   public updateNote(tick, pulse, event: Event) {
-    console.log("index: " + this.index);
-    console.log("tick: " + tick);
-    console.log("pulse: " + pulse);
-    console.log(event);
-
     const noteIndex = pulse * this.currentTicks + tick;
 
-    console.log("note index:" + noteIndex);
-    console.log(this.LocalNotes);
-
-    // this.groove.updateTrackNotes(this.index, )
     const noteEl = event.target as Element;
-    console.log(noteEl);
 
     if (noteEl.classList.contains("selected")) {
       this.renderer.removeClass(noteEl, "selected");
@@ -87,6 +77,8 @@ export class TrackComponent implements OnInit, AfterViewInit {
       this.renderer.addClass(noteEl, "selected");
       this.LocalNotes[noteIndex].shouldPlay = true;
     }
+
+    this.groove.updateTrackNotes(this.index, this.LocalNotes);
   }
 
   setInstrument(index: number) {
@@ -103,10 +95,6 @@ export class TrackComponent implements OnInit, AfterViewInit {
       this.LocalNotes.push({ shouldPlay: false });
       this.notes$.next(this.LocalNotes);
     }
-
-    console.log(this.noteContainerEl);
-
-    // this.renderer.removeClass(this.noteContainerEl, "selected");
 
     console.log(this.LocalNotes);
     this.groove.updateTrackNotes(this.index, this.LocalNotes);
