@@ -40,6 +40,8 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
 
     this.grooveChanged().subscribe((formValue) => {
       console.log(formValue);
+
+      this.cleanActiveNotes();
       this.groove.timeFormule$.next(formValue);
     });
 
@@ -71,6 +73,12 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
     } else {
       console.log("minimun tracks limit reached!");
     }
+  }
+
+  cleanActiveNotes() {
+    document.querySelectorAll(".selected").forEach((el, i, arr) => {
+      arr[i].classList.remove("selected");
+    });
   }
 
   public toggleLoop() {

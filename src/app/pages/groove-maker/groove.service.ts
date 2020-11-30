@@ -43,7 +43,7 @@ export class GrooveService {
 
   addTrack() {
     const newEmptyTrack: Track = {
-      instrument: "",
+      instrument: "hi-hat",
       notes: [],
       index: this._trackStore.length,
     };
@@ -60,21 +60,13 @@ export class GrooveService {
     console.dir(this._trackStore);
   }
 
-  setTracks(barLength: number) {
-    this._trackStore.forEach((track, i) => {
-      this._trackStore[i].instrument = track.instrument;
-      this._trackStore[i].notes = new Array(barLength).map((items) => {
-        let obj = Object.assign({}, { shouldPlay: false });
-        return obj;
-      });
-    });
-  }
-
   setTrackInstrument(i: number, instrument: string) {
     this._trackStore[i].instrument = instrument;
   }
 
-  updateTrackNotes(i: number, notes: Note[]) {}
+  updateTrackNotes(i: number, notes: Note[]) {
+    this._trackStore[i].notes = notes;
+  }
 
   // setTrackNotes(trackIndex: number, notes?: Note[]) {
   //   notes
@@ -144,4 +136,24 @@ export class GrooveService {
 //       i = 0;
 //     }
 //   }, (60 / 4 / this.tempo) * 1000);
+// }
+//
+//
+//
+// growTracksLength(barLength: number) {
+//   console.log(barLength);
+//   console.log(this._trackStore[0].notes.length);
+
+//   const diff = this._trackStore[0].notes.length - barLength;
+//   console.log(diff);
+
+//   this._trackStore.forEach((track, i) => {});
+// }
+// shrinkTracksLength(barLength: number) {
+//   console.log(barLength);
+//   console.log(this._trackStore[0].notes.length);
+
+//   const diff = barLength - this._trackStore[0].notes.length;
+//   console.log(diff);
+//   this._trackStore.forEach((track, i) => {});
 // }

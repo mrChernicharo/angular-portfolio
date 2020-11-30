@@ -1,5 +1,13 @@
 import { newArray } from "@angular/compiler/src/util";
-import { Component, Input, OnInit, Renderer2 } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from "@angular/core";
 import { BehaviorSubject, from, generate, Observable, of } from "rxjs";
 import {
   delay,
@@ -17,8 +25,9 @@ import { GrooveService, Note, TimeFormule, Track } from "../groove.service";
   templateUrl: "./track.component.html",
   styleUrls: ["./track.component.scss"],
 })
-export class TrackComponent implements OnInit {
+export class TrackComponent implements OnInit, AfterViewInit {
   instruments = ["hi-hat", "snare", "bass-kick"];
+  @ViewChild("row", { static: false }) notesContainerRef;
   @Input() index: number;
   currBarLength: number;
   LocalNotes: Note[] = [];
@@ -28,6 +37,10 @@ export class TrackComponent implements OnInit {
   notes$ = new BehaviorSubject<Note[]>([]);
   ticks$: Observable<Note[]>;
   pulses$: Observable<Note[]>;
+
+  get noteContainerEl() {
+    return this.notesContainerRef.nativeElement as Element;
+  }
 
   constructor(private groove: GrooveService, private renderer: Renderer2) {}
 
@@ -47,26 +60,32 @@ export class TrackComponent implements OnInit {
     );
   }
 
+  ngAfterViewInit() {
+    this.renderer.setProperty(this.noteContainerEl, "id", `row-${this.index}`);
+    console.log(this.noteContainerEl);
+  }
+
   public updateNote(tick, pulse, event: Event) {
-    console.log(this.index);
-    console.log(tick);
-    console.log(pulse);
+    console.log("index: " + this.index);
+    console.log("tick: " + tick);
+    console.log("pulse: " + pulse);
     console.log(event);
 
     const noteIndex = pulse * this.currentTicks + tick;
 
-    console.log(noteIndex);
+    console.log("note index:" + noteIndex);
     console.log(this.LocalNotes);
 
     // this.groove.updateTrackNotes(this.index, )
-
     const noteEl = event.target as Element;
+    console.log(noteEl);
 
     if (noteEl.classList.contains("selected")) {
-      this.renderer.removeClass(event.target, "selected");
-      // this.LocalNotes[]
+      this.renderer.removeClass(noteEl, "selected");
+      this.LocalNotes[noteIndex].shouldPlay = false;
     } else {
-      this.renderer.addClass(event.target, "selected");
+      this.renderer.addClass(noteEl, "selected");
+      this.LocalNotes[noteIndex].shouldPlay = true;
     }
   }
 
@@ -77,19 +96,36 @@ export class TrackComponent implements OnInit {
   }
 
   setLocalNotes(barLength: number) {
-    if (this.LocalNotes.length === this.currBarLength) {
-      console.log("localNotes com o mesmo tamanho");
+    console.log(barLength);
+
+    this.LocalNotes = [];
+    for (let i = 0; i < barLength; i++) {
+      this.LocalNotes.push({ shouldPlay: false });
+      this.notes$.next(this.LocalNotes);
     }
 
-    if (this.LocalNotes.length < 1) {
-      console.log(this.index + "localNotes vazio");
+    console.log(this.noteContainerEl);
 
-      for (let i = 0; i < barLength; i++) {
-        this.LocalNotes.push({ shouldPlay: false });
-      }
-      // this.notes$.next(this.LocalNotes);
-    }
+    // this.renderer.removeClass(this.noteContainerEl, "selected");
 
     console.log(this.LocalNotes);
+    this.groove.updateTrackNotes(this.index, this.LocalNotes);
   }
 }
+// if (this.LocalNotes.length === 0) {
+// console.log(this.index + "localNotes vazio");
+// if (this.LocalNotes.length === this.currBarLength) {
+//   console.log("localNotes com o mesmo tamanho");
+// } else if (this.LocalNotes.length > this.currBarLength) {
+//   console.log("localNotes maior");
+//   this.groove.shrinkTracksLength(barLength);
+// } else if (this.LocalNotes.length < this.currBarLength) {
+//   console.log("localNotes menor");
+//   this.groove.growTracksLength(barLength);
+// } else if (this.LocalNotes.length === 0) {
+//   console.log(this.index + "localNotes vazio");
+
+//   for (let i = 0; i < barLength; i++) {
+//     this.LocalNotes.push({ shouldPlay: false });
+//   }
+// this.notes$.next(this.LocalNotes);
