@@ -32,6 +32,7 @@ export class TrackComponent implements OnInit, AfterViewInit {
   currBarLength: number;
   LocalNotes: Note[] = [];
   currentTicks: number;
+  currentPulses: number;
   localTrack: Track;
   barFormule$: Observable<TimeFormule>;
   notes$ = new BehaviorSubject<Note[]>([]);
@@ -49,7 +50,16 @@ export class TrackComponent implements OnInit, AfterViewInit {
       tap((timeForm) => {
         this.pulses$ = of(new Array<Note>(timeForm.pulses));
         this.ticks$ = of(new Array<Note>(timeForm.ticks));
-        this.currentTicks = timeForm.ticks;
+
+        if (
+          timeForm.ticks !== this.currentTicks ||
+          timeForm.pulses !== this.currentPulses
+        ) {
+          this.LocalNotes = [];
+
+          this.currentTicks = timeForm.ticks;
+          this.currentPulses = timeForm.pulses;
+        }
       }),
       delay(10),
       tap((timeForm) => {
@@ -89,14 +99,15 @@ export class TrackComponent implements OnInit, AfterViewInit {
 
   setLocalNotes(barLength: number) {
     console.log(barLength);
+    if (this.LocalNotes.length) return;
 
     this.LocalNotes = [];
     for (let i = 0; i < barLength; i++) {
       this.LocalNotes.push({ shouldPlay: false });
-      this.notes$.next(this.LocalNotes);
     }
 
     console.log(this.LocalNotes);
+    this.notes$.next(this.LocalNotes);
     this.groove.updateTrackNotes(this.index, this.LocalNotes);
   }
 }

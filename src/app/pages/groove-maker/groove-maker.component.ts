@@ -1,7 +1,17 @@
 import { Component, OnDestroy, OnInit, Renderer2 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { BehaviorSubject, Observable, of } from "rxjs";
-import { debounceTime, distinctUntilChanged, map, tap } from "rxjs/operators";
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  ignoreElements,
+  map,
+  skip,
+  takeLast,
+  tap,
+  throttle,
+} from "rxjs/operators";
 import { appSounds } from "../live-examples/app.sounds";
 import { GrooveService, TimeFormule, Track } from "./groove.service";
 
@@ -40,11 +50,25 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
     );
 
     this.form.get("ticks").valueChanges.subscribe((value) => {
+      console.log(value);
       this.cleanActiveNotes();
     });
+
     this.form.get("pulses").valueChanges.subscribe((value) => {
+      console.log(value);
       this.cleanActiveNotes();
     });
+
+    this.form
+      .get("tempo")
+      .valueChanges.pipe(
+        debounceTime(400),
+        filter((value) => value > 30 && value < 300)
+      )
+      .subscribe((value) => {
+        console.log(value);
+        this.groove.updateTempo(value);
+      });
 
     this.grooveSettingsChanged().subscribe((formValue) => {
       this.groove.timeFormule$.next(formValue);

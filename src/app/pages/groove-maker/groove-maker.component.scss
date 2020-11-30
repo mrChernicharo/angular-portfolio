@@ -15,3 +15,15 @@ form {
   font-weight: 300;
   font-size: 12px;
 }
+
+.tempo-input-field,
+.pulses-input-field,
+.ticks-input-field {
+  width: 100px;
+}
+
+.play-btn {
+  border: 2px solid dodgerblue;
+  width: 90px;
+  padding-left: 10px;
+}

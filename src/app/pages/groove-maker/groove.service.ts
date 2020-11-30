@@ -1,6 +1,23 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
-import { tap } from "rxjs/operators";
+import {
+  BehaviorSubject,
+  concat,
+  interval,
+  merge,
+  Observable,
+  of,
+  Subject,
+} from "rxjs";
+import {
+  filter,
+  finalize,
+  map,
+  mergeMap,
+  skipWhile,
+  switchMap,
+  takeUntil,
+  tap,
+} from "rxjs/operators";
 
 export interface TimeFormule {
   pulses: number;
@@ -25,10 +42,14 @@ export class GrooveService {
   private _trackStore: Track[] = [];
   tracks$ = new BehaviorSubject<Track[]>([]);
   currentLength: number;
-  tempo$ = new BehaviorSubject<number>(100);
+  // tempo$ = new BehaviorSubject<number>(100);
+  tempo$ = new Observable<number>();
   timeFormule$ = new BehaviorSubject<TimeFormule>({ pulses: 2, ticks: 4 });
-  isPlaying = new BehaviorSubject<boolean>(false);
+  // isPlaying = new BehaviorSubject<boolean>(false);
+  isPlaying = false;
   barLength$: Observable<number>;
+  // latestTempo: number;
+  killInterval$ = new Subject<boolean>();
 
   constructor() {
     this.tracks$
@@ -39,6 +60,8 @@ export class GrooveService {
         })
       )
       .subscribe();
+
+    this.tempo$ = of(100);
   }
 
   addTrack() {
@@ -69,10 +92,42 @@ export class GrooveService {
     console.log(this._trackStore);
   }
 
+  updateTempo(tempo) {
+    console.log(tempo);
+    // this.pauseGroove();
+    this.tempo$ = of(tempo);
+
+    if (this.isPlaying) {
+      this.pauseGroove();
+      this.playGroove();
+    }
+  }
+
   playGroove() {
     console.log("play!");
+    console.dir(this._trackStore);
+    this.isPlaying = true;
+
+    this.tempo$
+      .pipe(
+        tap((tempo) => {
+          console.log("interval Time!");
+          // this.latestTempo = tempo;
+        }),
+        switchMap((tempo) => interval((60 / 4 / tempo) * 1000)),
+        takeUntil(this.killInterval$),
+        tap((v) => console.log(v)),
+        filter((v) => v % 20 === 0),
+        tap(() => {
+          console.log(this._trackStore);
+        })
+      )
+      .subscribe((tempo) => {});
   }
   pauseGroove() {
+    this.isPlaying = false;
+
+    this.killInterval$.next(true);
     console.log("pause!");
   }
 }
