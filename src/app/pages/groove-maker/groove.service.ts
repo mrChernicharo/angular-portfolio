@@ -41,7 +41,7 @@ export class GrooveService {
   // private _trackStore: Track[] = [{ instrument: "", notes: [], index: 0 }];
   private _trackStore: Track[] = [];
   tracks$ = new BehaviorSubject<Track[]>([]);
-  currentLength: number;
+  // currentLength: number;
   // tempo$ = new BehaviorSubject<number>(100);
   tempo$ = new Observable<number>();
   timeFormule$ = new BehaviorSubject<TimeFormule>({ pulses: 2, ticks: 4 });
@@ -56,7 +56,6 @@ export class GrooveService {
       .pipe(
         tap((tracks) => {
           console.dir(tracks);
-          this.currentLength = tracks.length;
         })
       )
       .subscribe();
@@ -112,18 +111,35 @@ export class GrooveService {
       .pipe(
         tap((tempo) => {
           console.log("interval Time!");
+          // console.log(this.currentLength);
+
           // this.latestTempo = tempo;
         }),
         switchMap((tempo) => interval((60 / 4 / tempo) * 1000)),
         takeUntil(this.killInterval$),
-        tap((v) => console.log(v)),
+        tap((v) => {
+          // colorir tempo atual em tods as tracks
+        }),
         filter((v) => v % 20 === 0),
-        tap(() => {
-          console.log(this._trackStore);
+        tap((v) => {
+          console.log(v);
+          // console.log(this._trackStore.forEach);
+          // this._trackStore.forEach((track, i, array) => {
+
+          // })
+
+          // const beat = this._trackStore.map((track, i) => {
+          //   if (track.notes.filter((track) => track.shouldPlay)) {
+          //     return track.instrument;
+          //   }
+          // });
+
+          // console.log(beat);
         })
       )
       .subscribe((tempo) => {});
   }
+
   pauseGroove() {
     this.isPlaying = false;
 
