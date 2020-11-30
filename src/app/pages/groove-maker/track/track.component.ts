@@ -20,11 +20,11 @@ import { GrooveService, Note, TimeFormule, Track } from "../groove.service";
 export class TrackComponent implements OnInit {
   instruments = ["hi-hat", "snare", "bass-kick"];
   @Input() index: number;
-
+  currBarLength: number;
   LocalNotes: Note[] = [];
+  currentTicks: number;
   localTrack: Track;
   barFormule$: Observable<TimeFormule>;
-  // notes$: Observable<Note[]>;
   notes$ = new BehaviorSubject<Note[]>([]);
   ticks$: Observable<Note[]>;
   pulses$: Observable<Note[]>;
@@ -36,12 +36,13 @@ export class TrackComponent implements OnInit {
       tap((timeForm) => {
         this.pulses$ = of(new Array<Note>(timeForm.pulses));
         this.ticks$ = of(new Array<Note>(timeForm.ticks));
+        this.currentTicks = timeForm.ticks;
       }),
       delay(10),
       tap((timeForm) => {
-        this.LocalNotes = new Array<Note>(timeForm.pulses * timeForm.ticks);
-        this.notes$.next(this.LocalNotes);
-        this.groove.setTracks(timeForm.pulses * timeForm.ticks);
+        this.currBarLength = timeForm.pulses * timeForm.ticks;
+        this.setLocalNotes(this.currBarLength);
+        // this.groove.setTracks(timeForm.pulses * timeForm.ticks);
       })
     );
   }
@@ -52,20 +53,43 @@ export class TrackComponent implements OnInit {
     console.log(pulse);
     console.log(event);
 
+    const noteIndex = pulse * this.currentTicks + tick;
+
+    console.log(noteIndex);
     console.log(this.LocalNotes);
 
     // this.groove.updateTrackNotes(this.index, )
 
     const noteEl = event.target as Element;
 
-    noteEl.classList.contains("selected")
-      ? this.renderer.removeClass(event.target, "selected")
-      : this.renderer.addClass(event.target, "selected");
+    if (noteEl.classList.contains("selected")) {
+      this.renderer.removeClass(event.target, "selected");
+      // this.LocalNotes[]
+    } else {
+      this.renderer.addClass(event.target, "selected");
+    }
   }
 
   setInstrument(index: number) {
     console.log(this.instruments[index]);
 
     this.groove.setTrackInstrument(this.index, this.instruments[index]);
+  }
+
+  setLocalNotes(barLength: number) {
+    if (this.LocalNotes.length === this.currBarLength) {
+      console.log("localNotes com o mesmo tamanho");
+    }
+
+    if (this.LocalNotes.length < 1) {
+      console.log(this.index + "localNotes vazio");
+
+      for (let i = 0; i < barLength; i++) {
+        this.LocalNotes.push({ shouldPlay: false });
+      }
+      // this.notes$.next(this.LocalNotes);
+    }
+
+    console.log(this.LocalNotes);
   }
 }

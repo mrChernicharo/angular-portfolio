@@ -27,7 +27,7 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.form = this.fb.group({
       tempo: [100, [Validators.max(300), Validators.min(40)]],
-      pulses: [4],
+      pulses: [2],
       ticks: [4],
       isClickOn: [this.isClickOn],
     });

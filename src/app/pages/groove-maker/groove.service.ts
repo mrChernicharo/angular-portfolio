@@ -26,7 +26,7 @@ export class GrooveService {
   tracks$ = new BehaviorSubject<Track[]>([]);
   currentLength: number;
   tempo$ = new BehaviorSubject<number>(100);
-  timeFormule$ = new BehaviorSubject<TimeFormule>({ pulses: 4, ticks: 4 });
+  timeFormule$ = new BehaviorSubject<TimeFormule>({ pulses: 2, ticks: 4 });
   isPlaying = new BehaviorSubject<boolean>(false);
   barLength$: Observable<number>;
 
@@ -63,7 +63,10 @@ export class GrooveService {
   setTracks(barLength: number) {
     this._trackStore.forEach((track, i) => {
       this._trackStore[i].instrument = track.instrument;
-      this._trackStore[i].notes = new Array(barLength);
+      this._trackStore[i].notes = new Array(barLength).map((items) => {
+        let obj = Object.assign({}, { shouldPlay: false });
+        return obj;
+      });
     });
   }
 
