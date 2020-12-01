@@ -13,6 +13,10 @@
   display: inline-block;
 }
 
+div[class*="tick-"] {
+  background-color: #7e5d7a;
+}
+
 .note {
   box-sizing: border-box;
   display: inline-block;
@@ -21,9 +25,9 @@
   border: 1px solid #fff;
   cursor: pointer;
 
-  //   &.current {
-  //     background-color: lawngreen;
-  //   }
+  &.current {
+    background-color: lawngreen;
+  }
 
   &.selected {
     background-color: royalblue;

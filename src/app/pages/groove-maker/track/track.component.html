@@ -19,13 +19,14 @@
       <!-- <ng-container *ngFor="let time of timeFormule$ | async"> -->
       <div
         class="pulse"
-        *ngFor="let arrPiece of pulses$ | async; let pulse = index"
+        *ngFor="let arrPiece of pulses$ | async as pulses; let pulse = index"
       >
         {{ pulse + 1 }}
         <div
           class="note"
+          [ngClass]="'tick-' + (currentTicks * pulse + tick)"
           (click)="updateNote(tick, pulse, $event)"
-          *ngFor="let note of ticks$ | async; let tick = index"
+          *ngFor="let note of ticks$ | async as ticks; let tick = index"
         >
           {{ tick + 1 }}
         </div>

@@ -12,6 +12,7 @@ import {
   filter,
   finalize,
   map,
+  mapTo,
   mergeMap,
   skipWhile,
   switchMap,
@@ -45,9 +46,11 @@ export class GrooveService {
   // tempo$ = new BehaviorSubject<number>(100);
   tempo$ = new Observable<number>();
   timeFormule$ = new BehaviorSubject<TimeFormule>({ pulses: 2, ticks: 4 });
+  currTimeFormule: TimeFormule;
+  currBarLength;
   // isPlaying = new BehaviorSubject<boolean>(false);
   isPlaying = false;
-  barLength$: Observable<number>;
+  // barLength$: Observable<number>;
   // latestTempo: number;
   killInterval$ = new Subject<boolean>();
 
@@ -59,7 +62,11 @@ export class GrooveService {
         })
       )
       .subscribe();
-
+    this.timeFormule$.subscribe((timeFormule) => {
+      this.currTimeFormule = timeFormule;
+      this.currBarLength =
+        this.currTimeFormule.pulses * this.currTimeFormule.ticks;
+    });
     this.tempo$ = of(100);
   }
 
@@ -111,31 +118,48 @@ export class GrooveService {
       .pipe(
         tap((tempo) => {
           console.log("interval Time!");
-          // console.log(this.currentLength);
 
           // this.latestTempo = tempo;
         }),
         switchMap((tempo) => interval((60 / 4 / tempo) * 1000)),
         takeUntil(this.killInterval$),
-        tap((v) => {
+        tap((b) => {
+          // transforma seq 0, 1, 2...infinito em 0, 1, 2, 0, 1, 2, 0.. de acordo com compasso
+          let beat = b % this.currBarLength;
+
           // colorir tempo atual em tods as tracks
+          this.drawClickPosition(beat);
         }),
-        filter((v) => v % 20 === 0),
+        // filter((v) => v % this.currBarLength === 0),
+        map((v) => {
+          let tickPayload: string[] = [];
+          this._trackStore.forEach((track, i) => {
+            // console.log(track.notes[v % this.currBarLength]);
+            // console.log(track.instrument);
+            // console.log(track.index);
+
+            if (track.notes[v % this.currBarLength].shouldPlay) {
+              tickPayload.push(track.instrument);
+            }
+          });
+          return tickPayload;
+        }),
         tap((v) => {
-          console.log(v);
-          // console.log(this._trackStore.forEach);
-          // this._trackStore.forEach((track, i, array) => {
-
-          // })
-
-          // const beat = this._trackStore.map((track, i) => {
-          //   if (track.notes.filter((track) => track.shouldPlay)) {
-          //     return track.instrument;
-          //   }
-          // });
-
-          // console.log(beat);
+          // console.log(v);
         })
+
+        // console.log(this._trackStore.forEach);
+        // this._trackStore.forEach((track, i, array) => {
+
+        // })
+
+        // const beat = this._trackStore.map((track, i) => {
+        //   if (track.notes.filter((track) => track.shouldPlay)) {
+        //     return track.instrument;
+        //   }
+        // });
+
+        // console.log(beat);
       )
       .subscribe((tempo) => {});
   }
@@ -145,6 +169,30 @@ export class GrooveService {
 
     this.killInterval$.next(true);
     console.log("pause!");
+  }
+
+  drawClickPosition(beat) {
+    console.log(beat);
+    let instrsAmount = this._trackStore.length;
+    let ticks = this.currTimeFormule["ticks"];
+    let pulses = this.currTimeFormule["pulses"];
+    let currNotesEls = document.querySelectorAll(".note");
+    let verticalEls = document.querySelectorAll(`.tick-${beat}`);
+    let previouslEls = document.querySelectorAll(
+      `.tick-${beat !== 0 ? beat - 1 : beat === 0 ? ticks * pulses - 1 : beat}`
+    );
+
+    previouslEls.forEach((el, key, parent) => {
+      el?.classList?.remove("current");
+    });
+
+    verticalEls.forEach((el, key, parent) => {
+      el.classList.add("current");
+    });
+    // console.log(verticalEls);
+
+    // console.log("instrsAmount: " + instrsAmount);
+    // console.log(currNotesEls);
   }
 }
 
