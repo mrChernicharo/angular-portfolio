@@ -37,7 +37,7 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      tempo: [100, [Validators.max(300), Validators.min(40)]],
+      tempo: [100, [Validators.max(500), Validators.min(20)]],
       pulses: [2],
       ticks: [4],
       isClickOn: [this.isClickOn],
@@ -108,6 +108,10 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
     document.querySelectorAll(".selected").forEach((el, i, arr) => {
       arr[i].classList.remove("selected");
     });
+  }
+
+  clearUIClickPos() {
+    this.groove.clearUI();
   }
 
   public toggleLoop() {

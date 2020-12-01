@@ -7,8 +7,11 @@ import {
   Observable,
   of,
   Subject,
+  throwError,
+  timer,
 } from "rxjs";
 import {
+  catchError,
   filter,
   finalize,
   map,
@@ -130,42 +133,36 @@ export class GrooveService {
           // colorir tempo atual em tods as tracks
           this.drawClickPosition(beat);
         }),
-        // filter((v) => v % this.currBarLength === 0),
+        filter((v) => v % this.currBarLength === 0),
         map((v) => {
-          let tickPayload: string[] = [];
+          let tickPayload = [];
           this._trackStore.forEach((track, i) => {
-            // console.log(track.notes[v % this.currBarLength]);
-            // console.log(track.instrument);
-            // console.log(track.index);
-
-            if (track.notes[v % this.currBarLength].shouldPlay) {
+            if (track.notes && track.notes[v % this.currBarLength].shouldPlay) {
               tickPayload.push(track.instrument);
             }
           });
-          return tickPayload;
+          return tickPayload as string[];
+        }),
+        catchError((err, err$) => {
+          // return throwError()
+          return of(err);
         }),
         tap((v) => {
-          // console.log(v);
+          // disparar sons
         })
-
-        // console.log(this._trackStore.forEach);
-        // this._trackStore.forEach((track, i, array) => {
-
-        // })
-
-        // const beat = this._trackStore.map((track, i) => {
-        //   if (track.notes.filter((track) => track.shouldPlay)) {
-        //     return track.instrument;
-        //   }
-        // });
-
-        // console.log(beat);
       )
-      .subscribe((tempo) => {});
+      .subscribe(
+        (tempo) => {},
+        (err) => {
+          console.log("erro");
+          return of(0);
+        }
+      );
   }
 
   pauseGroove() {
     this.isPlaying = false;
+    this.clearUI();
 
     this.killInterval$.next(true);
     console.log("pause!");
@@ -193,6 +190,27 @@ export class GrooveService {
 
     // console.log("instrsAmount: " + instrsAmount);
     // console.log(currNotesEls);
+  }
+
+  clearUI() {
+    console.log("clear this shit!");
+    let currNotesEls = document.querySelectorAll(".current");
+    timer(400).subscribe(
+      () => {
+        if (currNotesEls)
+          currNotesEls.forEach((el) => el.classList.remove("current"));
+      },
+      (err) => {
+        console.log("erro no clearUI");
+      },
+      () => {
+        console.log("completed!");
+
+        currNotesEls = document.querySelectorAll(".current");
+        if (currNotesEls)
+          currNotesEls.forEach((el) => el.classList.remove("current"));
+      }
+    );
   }
 }
 
