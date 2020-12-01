@@ -152,7 +152,7 @@ export class GrooveService {
         }),
         catchError((err, err$) => {
           // return throwError()
-          return of(err);
+          return throwError(err);
         })
       )
       .subscribe(
@@ -224,6 +224,33 @@ export class GrooveService {
         break;
       case "snare":
         src = "snare";
+        break;
+      case "click":
+        src = "click";
+        break;
+      case "shake":
+        src = "shake";
+        break;
+      case "cowbell-1":
+        src = "cowbell1";
+        break;
+      case "cowbell-2":
+        src = "cowbell2";
+        break;
+      case "timbale-1":
+        src = "timbale1";
+        break;
+      case "timbale-2":
+        src = "timbale2";
+        break;
+      case "metal":
+        src = "metal";
+        break;
+      case "metal":
+        src = "metal";
+        break;
+      case "woodblock":
+        src = "woodblock";
         break;
       default:
         return;

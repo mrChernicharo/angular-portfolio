@@ -26,7 +26,19 @@ import { GrooveService, Note, TimeFormule, Track } from "../groove.service";
   styleUrls: ["./track.component.scss"],
 })
 export class TrackComponent implements OnInit, AfterViewInit {
-  instruments = ["hi-hat", "snare", "bass-kick"];
+  instruments = [
+    "hi-hat",
+    "bass-kick",
+    "snare",
+    "click",
+    "shake",
+    "cowbell-1",
+    "cowbell-2",
+    "timbale-1",
+    "timbale-2",
+    "metal",
+    "woodblock",
+  ];
   @ViewChild("row", { static: false }) notesContainerRef;
   @Input() index: number;
   currBarLength: number;
