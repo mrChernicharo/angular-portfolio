@@ -22,6 +22,7 @@ import {
   takeUntil,
   tap,
 } from "rxjs/operators";
+import { appSounds } from "./app.sounds";
 
 export interface TimeFormule {
   pulses: number;
@@ -133,7 +134,7 @@ export class GrooveService {
           // colorir tempo atual em tods as tracks
           this.drawClickPosition(beat);
         }),
-        filter((v) => v % this.currBarLength === 0),
+        // filter((v) => v % this.currBarLength === 0),
         map((v) => {
           let tickPayload = [];
           this._trackStore.forEach((track, i) => {
@@ -143,12 +144,15 @@ export class GrooveService {
           });
           return tickPayload as string[];
         }),
+        tap((instrums) => {
+          instrums.forEach((instr) => {
+            // disparar sons
+            this.playInstrSound(instr);
+          });
+        }),
         catchError((err, err$) => {
           // return throwError()
           return of(err);
-        }),
-        tap((v) => {
-          // disparar sons
         })
       )
       .subscribe(
@@ -170,10 +174,10 @@ export class GrooveService {
 
   drawClickPosition(beat) {
     console.log(beat);
-    let instrsAmount = this._trackStore.length;
+    // let instrsAmount = this._trackStore.length;
+    // let currNotesEls = document.querySelectorAll(".note");
     let ticks = this.currTimeFormule["ticks"];
     let pulses = this.currTimeFormule["pulses"];
-    let currNotesEls = document.querySelectorAll(".note");
     let verticalEls = document.querySelectorAll(`.tick-${beat}`);
     let previouslEls = document.querySelectorAll(
       `.tick-${beat !== 0 ? beat - 1 : beat === 0 ? ticks * pulses - 1 : beat}`
@@ -186,10 +190,6 @@ export class GrooveService {
     verticalEls.forEach((el, key, parent) => {
       el.classList.add("current");
     });
-    // console.log(verticalEls);
-
-    // console.log("instrsAmount: " + instrsAmount);
-    // console.log(currNotesEls);
   }
 
   clearUI() {
@@ -212,80 +212,25 @@ export class GrooveService {
       }
     );
   }
+
+  playInstrSound(instr: string) {
+    let src;
+    switch (instr) {
+      case "hi-hat":
+        src = "hiHat";
+        break;
+      case "bass-kick":
+        src = "bassDrum";
+        break;
+      case "snare":
+        src = "snare";
+        break;
+      default:
+        return;
+    }
+
+    const sound = new Audio(appSounds[src]);
+
+    sound.play();
+  }
 }
-
-// toggleLoop() {
-//   this.isPlaying = !this.isPlaying;
-
-//   console.log("is playing ->" + this.isPlaying);
-//   const notes = document.querySelectorAll(".note");
-
-//   // pause
-//   if (!this.isPlaying) {
-//     notes.forEach((note, i) => {
-//       notes[i].classList.contains("current")
-//         ? notes[i].classList.remove("current")
-//         : null;
-//     });
-//     clearInterval(this.click);
-//     return;
-//   }
-
-//   // controle do loop
-//   let i = 0;
-//   this.click = setInterval(() => {
-//     notes[i].classList.add("current");
-
-//     if (i !== 0) {
-//       notes[i - 1].classList.remove("current");
-//     }
-
-//     if (i === 0) {
-//       notes[notes.length - 1].classList.remove("current");
-//     }
-
-//     if (i === notes.length) {
-//       notes[0].classList.add("current");
-//     }
-
-//     // som do click
-//     if (i % 4 === 0 && this.clickOn) {
-//       let clickSound = new Audio(appSounds.click);
-//       clickSound.play();
-//     }
-
-//     if (
-//       notes[i].classList.contains("current") &&
-//       notes[i].classList.contains("clicked")
-//     ) {
-//       let instrumentSonud = new Audio(appSounds.bassDrum);
-//       instrumentSonud.play();
-//     }
-
-//     if (i < notes.length - 1) {
-//       i++;
-//     } else {
-//       i = 0;
-//     }
-//   }, (60 / 4 / this.tempo) * 1000);
-// }
-//
-//
-//
-// growTracksLength(barLength: number) {
-//   console.log(barLength);
-//   console.log(this._trackStore[0].notes.length);
-
-//   const diff = this._trackStore[0].notes.length - barLength;
-//   console.log(diff);
-
-//   this._trackStore.forEach((track, i) => {});
-// }
-// shrinkTracksLength(barLength: number) {
-//   console.log(barLength);
-//   console.log(this._trackStore[0].notes.length);
-
-//   const diff = barLength - this._trackStore[0].notes.length;
-//   console.log(diff);
-//   this._trackStore.forEach((track, i) => {});
-// }

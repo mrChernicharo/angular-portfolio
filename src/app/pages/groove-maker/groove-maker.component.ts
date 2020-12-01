@@ -12,7 +12,7 @@ import {
   tap,
   throttle,
 } from "rxjs/operators";
-import { appSounds } from "../live-examples/app.sounds";
+import { appSounds } from "./app.sounds";
 import { GrooveService, TimeFormule, Track } from "./groove.service";
 
 @Component({

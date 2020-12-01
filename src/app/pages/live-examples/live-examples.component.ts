@@ -16,7 +16,7 @@ import {
 } from "@angular/forms";
 import { BehaviorSubject, from, interval, Observable, of } from "rxjs";
 import { debounceTime, map, tap, throttleTime } from "rxjs/operators";
-import { appSounds } from "./app.sounds";
+import { appDemoSounds as appSounds } from "./app.sounds.demo";
 
 interface note {}
 
