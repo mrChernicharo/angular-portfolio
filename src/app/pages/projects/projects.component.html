@@ -3,7 +3,10 @@
 
   <div class="projects" *ngFor="let projeto of projetos">
     <mat-card>
-      <h2>{{ projeto.title }}</h2>
+      <h2>
+        <div class="tiny-circle"></div>
+        {{ projeto.title }}
+      </h2>
       <img [src]="projeto.gif" [alt]="projeto.title" srcset="" />
       <p>{{ projeto.description }}</p>
 
