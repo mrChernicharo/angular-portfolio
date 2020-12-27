@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, Renderer2 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import {
   debounceTime,
@@ -25,7 +26,7 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
   trackCount = 0;
   tracks$: Observable<Track[]>;
   isPlaying = false;
-  isClickOn = true;
+  // isClickOn = true;
   currentLength: number;
   form: FormGroup;
 
@@ -40,7 +41,7 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
       tempo: [100, [Validators.max(500), Validators.min(20)]],
       pulses: [2],
       ticks: [4],
-      isClickOn: [this.isClickOn],
+      isClickOn: [false],
     });
 
     this.tracks$ = this.groove.tracks$.pipe(
@@ -118,5 +119,13 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
     this.isPlaying = !this.isPlaying;
 
     this.isPlaying ? this.groove.playGroove() : this.groove.pauseGroove();
+  }
+
+  onClickToggle(event: MatSlideToggleChange) {
+    console.log(event.checked);
+
+    event.checked
+      ? this.groove.isClickOn.next(true)
+      : this.groove.isClickOn.next(false);
   }
 }

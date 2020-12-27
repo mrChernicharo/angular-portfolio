@@ -50,6 +50,8 @@ export class GrooveService {
   // tempo$ = new BehaviorSubject<number>(100);
   tempo$ = new Observable<number>();
   timeFormule$ = new BehaviorSubject<TimeFormule>({ pulses: 2, ticks: 4 });
+  isClickOn = new BehaviorSubject<boolean>(false);
+
   currTimeFormule: TimeFormule;
   currBarLength;
   // isPlaying = new BehaviorSubject<boolean>(false);
@@ -104,7 +106,6 @@ export class GrooveService {
 
   updateTempo(tempo) {
     console.log(tempo);
-    // this.pauseGroove();
     this.tempo$ = of(tempo);
 
     if (this.isPlaying) {
@@ -122,10 +123,9 @@ export class GrooveService {
       .pipe(
         tap((tempo) => {
           console.log("interval Time!");
-
-          // this.latestTempo = tempo;
         }),
-        switchMap((tempo) => interval((60 / 4 / tempo) * 1000)),
+        // 15 / tempo parece reproduzir a velocidade mais fiel ao real
+        switchMap((tempo) => interval((15 / tempo) * 1000)),
         takeUntil(this.killInterval$),
         tap((b) => {
           // transforma seq 0, 1, 2...infinito em 0, 1, 2, 0, 1, 2, 0.. de acordo com compasso
@@ -141,6 +141,13 @@ export class GrooveService {
             if (track.notes && track.notes[v % this.currBarLength].shouldPlay) {
               tickPayload.push(track.instrument);
             }
+            // adicona som de click, caso click esteja ligado
+            if (
+              v % this.currTimeFormule.ticks === 0 &&
+              this.isClickOn.getValue()
+            ) {
+              tickPayload.push("click");
+            }
           });
           return tickPayload as string[];
         }),
@@ -150,6 +157,7 @@ export class GrooveService {
             this.playInstrSound(instr);
           });
         }),
+        tap(() => {}),
         catchError((err, err$) => {
           // return throwError()
           return throwError(err);
@@ -173,7 +181,7 @@ export class GrooveService {
   }
 
   drawClickPosition(beat) {
-    console.log(beat);
+    // console.log(beat);
     // let instrsAmount = this._trackStore.length;
     // let currNotesEls = document.querySelectorAll(".note");
     let ticks = this.currTimeFormule["ticks"];
