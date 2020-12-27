@@ -1,6 +1,14 @@
-<p>projects works!</p>
+<h1>Projects</h1>
 
 <div class="projects" *ngFor="let projeto of projetos">
-  <h3>{{ projeto.title }}</h3>
-  <p>{{ projeto.description }}</p>
+  <mat-card>
+    <h3>{{ projeto.title }}</h3>
+    <p>{{ projeto.description }}</p>
+    <img [src]="projeto.gif" [alt]="projeto.title" srcset="" />
+    <a [href]="projeto.url + '/blob/master/README.md'" target="_blank">
+      <button mat-raised-button color="primary">
+        <mat-icon>link</mat-icon><span> check it out</span>
+      </button>
+    </a>
+  </mat-card>
 </div>
