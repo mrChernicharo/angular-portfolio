@@ -1,14 +1,19 @@
-<h1>Projects</h1>
+<div class="page-container">
+  <h1>Projects</h1>
 
-<div class="projects" *ngFor="let projeto of projetos">
-  <mat-card>
-    <h3>{{ projeto.title }}</h3>
-    <p>{{ projeto.description }}</p>
-    <img [src]="projeto.gif" [alt]="projeto.title" srcset="" />
-    <a [href]="projeto.url + '/blob/master/README.md'" target="_blank">
-      <button mat-raised-button color="primary">
-        <mat-icon>link</mat-icon><span> check it out</span>
-      </button>
-    </a>
-  </mat-card>
+  <div class="projects" *ngFor="let projeto of projetos">
+    <mat-card>
+      <h2>{{ projeto.title }}</h2>
+      <img [src]="projeto.gif" [alt]="projeto.title" srcset="" />
+      <p>{{ projeto.description }}</p>
+
+      <div class="btn-container">
+        <a [href]="projeto.url + '/blob/master/README.md'" target="_blank">
+          <button mat-raised-button color="primary">
+            <mat-icon>link</mat-icon><span> check it out</span>
+          </button>
+        </a>
+      </div>
+    </mat-card>
+  </div>
 </div>
