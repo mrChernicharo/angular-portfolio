@@ -121,9 +121,6 @@ export class GrooveService {
 
     this.tempo$
       .pipe(
-        tap((tempo) => {
-          console.log("interval Time!");
-        }),
         // 15 / tempo parece reproduzir a velocidade mais fiel ao real
         switchMap((tempo) => interval((15 / tempo) * 1000)),
         takeUntil(this.killInterval$),
@@ -160,16 +157,14 @@ export class GrooveService {
             this.playInstrSound(instr);
           });
         }),
-        tap(() => {}),
         catchError((err, err$) => {
-          // return throwError()
           return throwError(err);
         })
       )
       .subscribe(
         (tempo) => {},
         (err) => {
-          console.log("erro");
+          console.log("erro " + err);
           return of(0);
         }
       );
