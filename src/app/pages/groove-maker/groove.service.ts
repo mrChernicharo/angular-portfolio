@@ -101,7 +101,7 @@ export class GrooveService {
 
   updateTrackNotes(i: number, notes: Note[]) {
     this._trackStore[i].notes = notes;
-    console.log(this._trackStore);
+    // console.log(this._trackStore);
   }
 
   updateTempo(tempo) {
@@ -134,21 +134,24 @@ export class GrooveService {
           // colorir tempo atual em tods as tracks
           this.drawClickPosition(beat);
         }),
-        // filter((v) => v % this.currBarLength === 0),
         map((v) => {
+          //
           let tickPayload = [];
           this._trackStore.forEach((track, i) => {
+            //
             if (track.notes && track.notes[v % this.currBarLength].shouldPlay) {
               tickPayload.push(track.instrument);
             }
-            // adicona som de click, caso click esteja ligado
-            if (
-              v % this.currTimeFormule.ticks === 0 &&
-              this.isClickOn.getValue()
-            ) {
-              tickPayload.push("click");
-            }
           });
+
+          // adicona som de click, caso click esteja ligado
+          if (
+            v % this.currTimeFormule.ticks === 0 &&
+            this.isClickOn.getValue()
+          ) {
+            tickPayload.push("click");
+          }
+          //
           return tickPayload as string[];
         }),
         tap((instrums) => {
