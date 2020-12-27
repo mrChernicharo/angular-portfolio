@@ -1,70 +1,77 @@
 <h1>Groove Maker</h1>
 
 <form [formGroup]="form" matForm>
-  <mat-form-field class="tempo-input-field" appearance="outline">
-    <mat-label>Tempo</mat-label>
-    <input
-      type="number"
-      name="tempo"
-      formControlName="tempo"
-      matInput
-      placeholder="tempo"
-      max="500"
-      min="20"
-    />
-  </mat-form-field>
+  <div class="first-group">
+    <mat-form-field class="tempo-input-field" appearance="outline">
+      <mat-label>Tempo</mat-label>
+      <input
+        type="number"
+        name="tempo"
+        formControlName="tempo"
+        matInput
+        placeholder="tempo"
+        max="500"
+        min="20"
+      />
+    </mat-form-field>
 
-  <mat-form-field class="pulses-input-field" appearance="outline">
-    <mat-label>pulses</mat-label>
-    <input
-      (change)="clearUIClickPos()"
-      type="number"
-      class="pulses-input"
-      name="timeFormule"
-      formControlName="pulses"
-      matInput
-      min="1"
-      max="16"
-    />
-  </mat-form-field>
-  <mat-form-field class="ticks-input-field" appearance="outline">
-    <mat-label>ticks</mat-label>
-    <input
-      (change)="clearUIClickPos()"
-      type="number"
-      class="ticks-input"
-      name="timeFormule"
-      formControlName="ticks"
-      matInput
-      min="1"
-      max="16"
-    />
-  </mat-form-field>
+    <mat-form-field class="pulses-input-field" appearance="outline">
+      <mat-label>pulses</mat-label>
+      <input
+        (change)="clearUIClickPos()"
+        type="number"
+        class="pulses-input"
+        name="timeFormule"
+        formControlName="pulses"
+        matInput
+        min="1"
+        max="16"
+      />
+    </mat-form-field>
+    <mat-form-field class="ticks-input-field" appearance="outline">
+      <mat-label>ticks</mat-label>
+      <input
+        (change)="clearUIClickPos()"
+        type="number"
+        class="ticks-input"
+        name="timeFormule"
+        formControlName="ticks"
+        matInput
+        min="1"
+        max="16"
+      />
+    </mat-form-field>
+  </div>
+  <div class="second-group">
+    <mat-slide-toggle
+      class="click-toggle"
+      formControlName="isClickOn"
+      color="primary"
+      >Click</mat-slide-toggle
+    >
 
-  <mat-slide-toggle formControlName="isClickOn">Click</mat-slide-toggle>
+    <button class="play-btn" mat-button (click)="toggleLoop()">
+      <ng-container *ngIf="!isPlaying">
+        <mat-icon>play_arrow</mat-icon>
+        Play!
+      </ng-container>
 
-  <button class="play-btn" mat-button (click)="toggleLoop()">
-    <ng-container *ngIf="!isPlaying">
-      <mat-icon>play_arrow</mat-icon>
-      Play!
-    </ng-container>
-
-    <ng-container *ngIf="isPlaying">
-      <mat-icon>pause</mat-icon>
-      Pause
-    </ng-container>
-  </button>
-
-  <label id="label">instruments</label>
-
-  <div class="instruments-controls">
-    <button mat-button (click)="addInstrumentTrack()">
-      <mat-icon>add</mat-icon>
+      <ng-container *ngIf="isPlaying">
+        <mat-icon>pause</mat-icon>
+        Pause
+      </ng-container>
     </button>
 
-    <button mat-button (click)="removeInstrumentTrack()">
-      <mat-icon>remove</mat-icon>
-    </button>
+    <div class="instruments-controls">
+      <p id="label">instruments</p>
+      <button mat-button (click)="addInstrumentTrack()">
+        <mat-icon>add</mat-icon>
+      </button>
+
+      <button mat-button (click)="removeInstrumentTrack()">
+        <mat-icon>remove</mat-icon>
+      </button>
+    </div>
   </div>
 </form>
 
