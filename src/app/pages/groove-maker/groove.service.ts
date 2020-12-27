@@ -231,6 +231,15 @@ export class GrooveService {
       case "snare":
         src = "snare";
         break;
+      case "sidestick":
+        src = "snareSidestick";
+        break;
+      case "ride":
+        src = "ride";
+        break;
+      case "ride-bell":
+        src = "rideBell";
+        break;
       case "click":
         src = "click";
         break;

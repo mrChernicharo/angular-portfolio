@@ -30,7 +30,7 @@
     // font-size: 36px;
     color: #fff;
     margin: 12px;
-    animation: slowGrow 20s forwards;
+    animation: slowGrow 10s infinite;
 
     &.span1 {
       letter-spacing: 10px;
@@ -65,8 +65,11 @@
   from {
     font-size: 28px;
   }
+  50% {
+    font-size: 40px;
+  }
 
   to {
-    font-size: 40px;
+    font-size: 28px;
   }
 }

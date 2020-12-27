@@ -1,1 +1,6 @@
 <p>projects works!</p>
+
+<div class="projects" *ngFor="let projeto of projetos">
+  <h3>{{ projeto.title }}</h3>
+  <p>{{ projeto.description }}</p>
+</div>

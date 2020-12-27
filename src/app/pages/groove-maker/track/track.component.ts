@@ -30,7 +30,9 @@ export class TrackComponent implements OnInit, AfterViewInit {
     "hi-hat",
     "bass-kick",
     "snare",
-    "click",
+    "sidestick",
+    "ride",
+    "ride-bell",
     "shake",
     "cowbell-1",
     "cowbell-2",
@@ -38,6 +40,7 @@ export class TrackComponent implements OnInit, AfterViewInit {
     "timbale-2",
     "metal",
     "woodblock",
+    "click",
   ];
   @ViewChild("row", { static: false }) notesContainerRef;
   @Input() index: number;
