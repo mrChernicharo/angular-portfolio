@@ -7,12 +7,14 @@ import { HomeComponent } from "./pages/home/home.component";
 import { LiveExamplesComponent } from "./pages/live-examples/live-examples.component";
 import { ProjectsComponent } from "./pages/projects/projects.component";
 import { SkillsComponent } from "./pages/skills/skills.component";
+import { GraphsComponent } from "./pages/graphs/graphs.component";
 
 const routes: Routes = [
   { path: "", redirectTo: "/home", pathMatch: "full" },
   { path: "home", component: HomeComponent },
   { path: "skills", component: SkillsComponent },
   { path: "projects", component: ProjectsComponent },
+  { path: "graphs", component: GraphsComponent },
   { path: "about", component: AboutComponent },
   { path: "groove", component: GrooveMakerComponent },
   { path: "live", component: LiveExamplesComponent },

@@ -34,6 +34,8 @@ import { BlogComponent } from "./pages/blog/blog.component";
 import { InstrumentRowComponent } from "./pages/live-examples/instrument-row/instrument-row.component";
 import { GrooveMakerComponent } from "./pages/groove-maker/groove-maker.component";
 import { TrackComponent } from './pages/groove-maker/track/track.component';
+import { GraphsComponent } from './pages/graphs/graphs.component';
+import { AppCardComponent } from './components/app-card/app-card.component';
 
 const matModules = [
   MatButtonModule,
@@ -65,6 +67,8 @@ const matModules = [
     GrooveMakerComponent,
     AboutComponent,
     TrackComponent,
+    GraphsComponent,
+    AppCardComponent,
   ],
   imports: [
     BrowserModule,
