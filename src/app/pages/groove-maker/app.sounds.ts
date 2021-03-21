@@ -1,7 +1,8 @@
 export const appSounds = {
   click: `../../../assets/sounds/tick.mp3`,
-  bassDrum: `../../../assets/sounds/tunn.mp3`,
+  bassDrum: `../../../assets/sounds/bass_kick.mp3`,
   snare: `../../../assets/sounds/snare.mp3`,
+  ton: `../../../assets/sounds/tunn.mp3`,
   snareSidestick: `../../../assets/sounds/side-stick.mp3`,
   hiHat: `../../../assets/sounds/hi-hat.mp3`,
   ride: "../../../assets/sounds/ride.mp3",

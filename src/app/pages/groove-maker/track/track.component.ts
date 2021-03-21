@@ -31,6 +31,7 @@ export class TrackComponent implements OnInit, AfterViewInit {
     "bass-kick",
     "snare",
     "sidestick",
+    "ton-ton",
     "ride",
     "ride-bell",
     "shake",

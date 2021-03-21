@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Renderer2 } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { MatSlideToggleChange } from "@angular/material/slide-toggle";
-import { BehaviorSubject, Observable, of } from "rxjs";
+import { BehaviorSubject, Observable, of, Subject } from "rxjs";
 import {
   debounceTime,
   distinctUntilChanged,
@@ -10,6 +10,7 @@ import {
   map,
   skip,
   takeLast,
+  takeUntil,
   tap,
   throttle,
 } from "rxjs/operators";
@@ -29,6 +30,7 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
   // isClickOn = true;
   currentLength: number;
   form: FormGroup;
+  destroySubject$ = new Subject<boolean>();
 
   constructor(
     private fb: FormBuilder,
@@ -45,6 +47,7 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
     });
 
     this.tracks$ = this.groove.tracks$.pipe(
+      takeUntil(this.destroySubject$),
       tap((tracks) => {
         this.trackCount = tracks.length;
       })
@@ -80,6 +83,9 @@ export class GrooveMakerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.groove.removeTrack();
+    this.cleanActiveNotes();
+    this.groove.pauseGroove();
+    this.destroySubject$.next(true);
   }
 
   public grooveSettingsChanged(): Observable<any> {

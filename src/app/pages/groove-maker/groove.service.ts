@@ -90,7 +90,6 @@ export class GrooveService {
 
   removeTrack() {
     this._trackStore.pop();
-
     this.tracks$.next(this._trackStore);
     console.dir(this._trackStore);
   }
@@ -239,6 +238,9 @@ export class GrooveService {
         break;
       case "ride-bell":
         src = "rideBell";
+        break;
+      case "ton-ton":
+        src = "ton";
         break;
       case "click":
         src = "click";
